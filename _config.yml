@@ -12,7 +12,7 @@ links:
     url:          /
     external:     false
   - name:         About me
-    url:          /feed
+    url:          /test
     external:     false
 # ------------ CONFIGURABLE END ------------
 
