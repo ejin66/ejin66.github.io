@@ -1,43 +1,63 @@
-var gulp = require('gulp');
+// Use npm install to install all the dependencies located in package.json
+const gulp = require('gulp');
+const concat = require('gulp-concat');
+const uglify = require('gulp-uglify');
+const imagemin = require('gulp-imagemin');
+const gutil = require('gulp-util');
+const shell = require('gulp-shell');
+const less = require('gulp-less');
+const cssmin = require('gulp-cssmin')
+const replace = require('gulp-replace');
 
-gulp.task('copy', function() {
+gulp.task('js', function () {
+    gutil.log('... Minifying js');
+    gulp.src(['assets/js/partials/**.js'])
+        .pipe(concat('main.min.js'))
+        .pipe(uglify())
+        .on('error', (err) => {
+            gutil.log(gutil.colors.red('[Error]'), err.toString());
+        })
+        .pipe(gulp.dest("assets/js/"))
+});
 
-  // Start Bootstrap Clean Blog SCSS
-  gulp.src(['node_modules/startbootstrap-clean-blog/scss/**/*'])
-    .pipe(gulp.dest('assets/vendor/startbootstrap-clean-blog/scss'))
+gulp.task("img", function () {
+    gutil.log('... Minifying images');
+    gulp.src('assets/img/**/*.{png,svg,jpg,gif}')
+        .pipe(imagemin())
+        .on('error', (err) => {
+            gutil.log(gutil.colors.red('[Error]'), err.toString());
+        })
+        .pipe(gulp.dest('assets/img/'))
+});
 
-  // Start Bootstrap Clean Blog JS
-  gulp.src([
-      'node_modules/startbootstrap-clean-blog/js/clean-blog.min.js',
-      'node_modules/startbootstrap-clean-blog/js/jqBootstrapValidation.js'
-    ])
-    .pipe(gulp.dest('assets/vendor/startbootstrap-clean-blog/js'))
-
-  // Bootstrap
-  gulp.src([
-      'node_modules/bootstrap/dist/**/*',
-      '!**/npm.js',
-      '!**/bootstrap-theme.*',
-      '!**/*.map'
-    ])
-    .pipe(gulp.dest('assets/vendor/bootstrap'))
-
-  // jQuery
-  gulp.src(['node_modules/jquery/dist/jquery.js', 'node_modules/jquery/dist/jquery.min.js'])
-    .pipe(gulp.dest('assets/vendor/jquery'))
-
-  // Font Awesome
-  gulp.src([
-      'node_modules/font-awesome/**',
-      '!node_modules/font-awesome/**/*.map',
-      '!node_modules/font-awesome/.npmignore',
-      '!node_modules/font-awesome/*.txt',
-      '!node_modules/font-awesome/*.md',
-      '!node_modules/font-awesome/*.json'
-    ])
-    .pipe(gulp.dest('assets/vendor/font-awesome'))
-
+gulp.task('minify-bootstrap-css', function () {
+    gutil.log('... Minifying isolated bootstrap');
+    gulp.src('assets/css/vendor/bootstrap-iso.css')
+        .pipe(cssmin())
+        .on('error', (err) => {
+            gutil.log(gutil.colors.red('[Error]'), err.toString());
+        })
+        .pipe(concat('bootstrap-iso.min.css'))
+        .pipe(gulp.dest('assets/css/vendor/'));
 })
 
-// Default task
-gulp.task('default', ['copy']);
+gulp.task("isolate-bootstrap-css", ['minify-bootstrap-css'], function () {
+    gutil.log('... Generating isolated bootstrap');
+    gulp.src('assets/css/bootstrap-iso.less')
+        .pipe(less())
+        .pipe(replace('.bootstrap-iso html', ''))
+        .pipe(replace('.bootstrap-iso body', ''))
+        .pipe(gulp.dest('assets/css/vendor/'));
+});
+
+gulp.task("serve", function () {
+    gutil.log('... Launching Web browser');
+    gutil.log('... Starting Jelyll');
+    shell.task([
+        "python -m webbrowser 'http://localhost:4000/Type-on-Strap/' && bundle exec jekyll serve --watch"
+    ])
+});
+
+gulp.task('default', ['js', 'img'], function () {
+    return gutil.log('... Gulp is running!');
+});
