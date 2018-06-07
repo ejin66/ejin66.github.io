@@ -46,11 +46,22 @@ theme_settings:
   youtube:
   
   # Sharing options
-  
+  share_buttons_enable: false
+  share_buttons:
+    facebook: true
+    twitter: true
+    google_plus: true
+    tumblr:
+    pinterest:
+    pocket:
+    reddit: true
+    linkedin:
+    wordpress:
+    email: true
 
   # Scripts / Features 
   google_analytics: # Tracking ID, e.g. "UA-000000-01"
-  disqus_shortname:
+  disqus_shortname: true
   katex: true # Enable if using math markup
   
   special_page:
