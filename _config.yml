@@ -2,7 +2,7 @@
 baseurl: "/"
 url: "https://ejin66.github.io"
 title: Ejin Blog
-description: "A website with blog posts and pages" # used by search engines
+description: "A good website" # used by search engines
 
 
 # THEME-SPECIFIC CONFIGURATION
@@ -29,7 +29,7 @@ theme_settings:
   facebook:
   flickr:
   gitlab:
-  github: "sylhare"
+  github: "ejin66"
   google_plus:
   instagram:
   keybase:
