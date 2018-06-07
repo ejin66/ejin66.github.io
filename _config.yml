@@ -1,27 +1,27 @@
 # SITE CONFIGURATION
 baseurl: "/"
 url: "https://ejin66.github.io"
-title: Type on Strap # site's title
+title: Ejin Blog
 description: "A website with blog posts and pages" # used by search engines
 
 
 # THEME-SPECIFIC CONFIGURATION
 theme_settings:
   # Meta
-  title: Type on Strap # blog's title
+  title: Ejin Blog
   avatar: assets/img/triangle.svg
   favicon: assets/favicon.ico
   gravatar: # Email MD5 hash
 
   # Header and footer text
   header_text: > #two or three lines to describe your site
-     <p>Change header text in <code>_config.yml</code> <br> to update this feature.</p>
+     <p>Programing well <br> Go home early</p>
   header_text_feature_image: assets/img/pexels/triangular.jpeg
   footer_text: >
-   Powered by <a href="https://jekyllrb.com/">Jekyll</a> with <a href="https://github.com/sylhare/Type-on-Strap">Type on Strap</a>
+   Good day!
 
   # Icons
-  rss: true  # Make sure you created a feed.xml with feed.xml layout
+  rss: false  # Make sure you created a feed.xml with feed.xml layout
   email_address: # Full email address, e.g. "sam@example.com"
   behance:
   bitbucket:
@@ -47,16 +47,16 @@ theme_settings:
   
   # Sharing options
   share_buttons:
-    facebook: true
-    twitter: true
-    google_plus: true
+    facebook: false
+    twitter: false
+    google_plus: false
     tumblr:
     pinterest:
     pocket:
-    reddit: true
+    reddit: false
     linkedin:
     wordpress:
-    email: true
+    email: false
 
   # Scripts / Features 
   google_analytics: # Tracking ID, e.g. "UA-000000-01"
@@ -95,7 +95,7 @@ theme_settings:
   
   
 # PAGINATION
-paginate: 5
+paginate: 8
 paginate_path: "blog/page:num"
 
 
