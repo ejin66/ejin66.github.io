@@ -56,7 +56,7 @@ theme_settings:
     reddit: false
     linkedin:
     wordpress:
-    email: false
+    email: 
 
   # Scripts / Features 
   google_analytics: # Tracking ID, e.g. "UA-000000-01"
