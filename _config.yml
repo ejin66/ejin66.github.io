@@ -9,7 +9,7 @@ description: "A good website" # used by search engines
 theme_settings:
   # Meta
   title: Ejin Blog
-  avatar: assets/img/triangle.svg
+  avatar: assets/img/mycat.jpg
   favicon: assets/favicon.ico
   gravatar: # Email MD5 hash
 
@@ -103,7 +103,7 @@ paginate_path: "blog/page:num"
 # PORTFOLIO
 collections:
   portfolio:
-    output: true
+    output: false
     permalink: /:collection/:name
 
 
