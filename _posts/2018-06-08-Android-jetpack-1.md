@@ -1,7 +1,7 @@
 ---
-layout:post
+layout: post
 title: Android jetpack 相关类的理解
-tags:[Jetpack, Android]
+tags: [Jetpack, Android]
 ---
 
 
