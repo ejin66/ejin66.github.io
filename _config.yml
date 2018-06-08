@@ -9,7 +9,7 @@ description: "A good website" # used by search engines
 theme_settings:
   # Meta
   title: Ejin Blog
-  avatar: assets/img/mycat.jpg
+  avatar: assets/img/macat.jpg
   favicon: assets/favicon.ico
   gravatar: # Email MD5 hash
 
