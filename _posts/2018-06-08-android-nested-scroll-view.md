@@ -1,7 +1,7 @@
 ---
 layout: post
 title: NestedScrollView 总结
-tags: [Android, NestedScrollView ]
+tags: [Android,NestedScrollView]
 ---
 
 
