@@ -4,7 +4,7 @@ url: "https://ejin66.github.io"
 title: Ejin Blog
 description: "A good website" # used by search engines
 
-
+exclude: ['favorite']
 # THEME-SPECIFIC CONFIGURATION
 theme_settings:
   # Meta
