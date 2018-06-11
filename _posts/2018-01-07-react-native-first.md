@@ -6,7 +6,7 @@ tags: [ReactNative]
 
 
 
-####1. React Native开发环境搭建，参考： [搭建React Native开发环境（中文版）](http://reactnative.cn/docs/0.51/getting-started.html) 
+#### 1. React Native开发环境搭建，参考： [搭建React Native开发环境（中文版）](http://reactnative.cn/docs/0.51/getting-started.html) 
 
 #### 2. 常用命令
 
