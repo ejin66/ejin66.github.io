@@ -31,3 +31,7 @@ tags: [Jetpack, Android]
 
 #### Dagger 2
 //待整理
+
+
+
+![关系图]({{site.baseurl}}/assets/img/pexels/final-architecture.png)
