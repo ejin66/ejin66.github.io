@@ -30,7 +30,7 @@ tags: [Jetpack, Android]
 //待整理
 
 #### Dagger 2
-#####1. 概念
+##### 1. 概念
 
 > Dagger2 是Google维护的一个依赖注入的框架。通过@Inject、@Component、@Module、@Provides、@Scope等注解实现类的注入。它的机制是在编译期根据注解生产相应代码，而非通过运行时反射，因此也不会有性能上的影响。
 
@@ -42,7 +42,9 @@ tags: [Jetpack, Android]
 
 *@Scope:*  实例的作用域范围
 
-#####2. 代码示例
+
+
+##### 2. 代码示例
 
 1. 被注入的类 + Component + 需要注入的类
 
@@ -89,11 +91,11 @@ tags: [Jetpack, Android]
    }
    ```
 
-   > 被注入的变量需要被 `@Inject` 注解
+   > a. 被注入的变量需要被 `@Inject` 注解
    >
-   > 调用 `DaggerDemoActivityComponent.create().inject(this) ` 开始注入
+   > b. 调用 `DaggerDemoActivityComponent.create().inject(this) ` 开始注入
    >
-   > 类 `DaggerDemoActivityComponent` 会在编译时自动生产
+   > c. 类 `DaggerDemoActivityComponent` 会在编译时自动生产
 
 
 
@@ -109,13 +111,13 @@ tags: [Jetpack, Android]
    }
    ```
 
-   > 类需要被 `@Module` 注解
+   > a. 类需要被 `@Module` 注解
    >
-   > 方法中需要有一个返回 `被注解的类` 的方法， 并且被 `@Module` 注解
+   > b. 方法中需要有一个返回 `被注解的类` 的方法， 并且被 `@Module` 注解
    >
-   > 若 `@Provides 方法` 与 `@Inject构造方法` 均存在， 优先使用第一个， 在找不到方法的情况下会去查找 `@Inject构造方法` 的类
+   > c. 若 `@Provides 方法` 与 `@Inject构造方法` 均存在， 优先使用第一个， 在找不到方法的情况下会去查找 `@Inject构造方法` 的类
    >
-   > 若 `@Provides 方法` 需要入参，Dagger2 会在该Module中自动查找返回该入参的其他 `@Provides 方法`。
+   > d. 若 `@Provides 方法` 需要入参，Dagger2 会在该Module中自动查找返回该入参的其他 `@Provides 方法`。
 
    
 
@@ -128,9 +130,9 @@ tags: [Jetpack, Android]
    }
    ```
 
-   > @Component 关联Module 类
+   > a. @Component 关联Module 类
    >
-   > Component 除了可以扩展Module外， 还能dependencies Component。相当于继承，在dependencies之后， Component 便拥有了原来的功能。
+   > b. Component 除了可以扩展Module外， 还能dependencies Component。相当于继承，在dependencies之后， Component 便拥有了原来的功能。
 
 
 
@@ -147,7 +149,7 @@ tags: [Jetpack, Android]
    }
    ```
 
-   ***Component***增加 `@Singleton` 注解
+   ***Component 增加 `@Singleton` 注解***
 
    ```kotlin
    @Singleton
@@ -157,13 +159,15 @@ tags: [Jetpack, Android]
    }
    ```
 
-   > `DaggerDemoActivityComponent.create() ` 产生的Component实例不是单例
+   > a. `DaggerDemoActivityComponent.create() ` 产生的Component实例不是单例
    >
-   > 同一个Component 多次调用inject 注入的实例是单例
+   > b. 同一个Component 多次调用inject 注入的实例是单例
    >
-   > `@Singleton` 是`@Scope` 的一个子类， 可以自定义其他scope子类， 代表不同功能， 如： @ApplicationScope 、 @ActivityScope
+   > c. `@Singleton` 是`@Scope` 的一个子类， 可以自定义其他scope子类， 代表不同功能， 如： @ApplicationScope 、 @ActivityScope
 
-#####3. 使用
+
+
+##### 3. 使用
 
 ```groovy
 //加入依赖
@@ -171,19 +175,17 @@ implementation 'com.google.dagger:dagger:2.16'
 annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
 ```
 
-> 在kotlin中使用dagger的注意点：
+> a. 将annotationProcessor更换成kapt
 >
-> 1. 将annotationProcessor更换成kapt
+> b. 引入插件 ‘ kotlin-kapt ’
 >
-> 2. 引入插件 ‘ kotlin-kapt ’
->
->    ```groovy
->    apply plugin: 'kotlin-kapt'
->    ...
->    kapt {
->        generateStubs = true
->    }
->    ```
+> ```groovy
+> apply plugin: 'kotlin-kapt'
+> ...
+> kapt {
+>     generateStubs = true
+> }
+> ```
 
 
 
