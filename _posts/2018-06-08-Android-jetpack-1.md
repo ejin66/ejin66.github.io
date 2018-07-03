@@ -275,9 +275,35 @@ tags: [Jetpack, Android]
 
 #### LifeCycle
 
-//待整理
+​    **示意图**
 
+![LifeCycle 状态图]({{site.baseurl}}/assets/img/pexels/lifecycle-states.png)
 
+​    **简单代码**
+
+```
+public class MyObserver implements LifecycleObserver {
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    public void connectListener() {
+        ...
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    public void disconnectListener() {
+        ...
+    }
+}
+
+myLifecycleOwner.getLifecycle().addObserver(new MyObserver());
+```
+
+​    **如何使用**
+
+```groovy
+def lifecycle_version = "1.1.1"
+//LifeCycler
+implementation "android.arch.lifecycle:runtime:$lifecycle_version"
+```
 
 
 
