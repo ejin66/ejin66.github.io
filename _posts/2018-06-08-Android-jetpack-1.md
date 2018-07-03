@@ -281,7 +281,7 @@ tags: [Jetpack, Android]
 
 ​    **简单代码**
 
-```
+```java
 public class MyObserver implements LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void connectListener() {
@@ -309,9 +309,179 @@ implementation "android.arch.lifecycle:runtime:$lifecycle_version"
 
 #### WorkManager
 
-//待整理
+​    **介绍：**
+
+> WorkManager能够帮助我们在适合的时间点处理异步的、可推迟的任务。例如，我们创建一个下载任务，并指定下载条件：仅在设备在充电且有网的状态下，将任务交给WorkManager之后， 它会在适当的时间点帮助我们进行下载。即使App应用已经强制退出了或者手机重启过，该任务都能够保住运行。
+>
+> 如果WorkManager在处理任务时，APP恰好在运行中，那WorkManager会在当前APP进程中创建一个新的线程处理该任务。如果此时APP并未运行，WorkManager会选择一个合适的方式，如[`JobScheduler`](https://developer.android.com/reference/android/app/job/JobScheduler.html), [Firebase JobDispatcher](https://github.com/firebase/firebase-jobdispatcher-android#user-content-firebase-jobdispatcher-), or [`AlarmManager`](https://developer.android.com/reference/android/app/AlarmManager.html)等。作为开发者，并不要关心WorkManager选用哪种方式，把一切都交给WorkManager就好了。
+
+​    **代码：**
+
+创建任务
+
+```kotlin
+class CompressWorker : Worker()  {
+
+    override fun doWork(): Result {
+
+        // Do the work here--in this case, compress the stored images.
+        // In this example no parameters are passed; the task is
+        // assumed to be "compress the whole library."
+        myCompress()
+
+        // Indicate success or failure with your return value:
+        return Result.SUCCESS
+
+        // (Returning RETRY tells WorkManager to try this task again
+        // later; FAILURE says not to try again.)
+
+    }
+
+}
+```
+
+交给WorkManager:
+
+```kotlin
+val compressionWork = OneTimeWorkRequestBuilder<CompressWorker>().build()
+WorkManager.getInstance().enqueue(compressionWork)
+```
+
+设置一些运行条件（如果不设置，一般会立刻运行）：
+
+```kotlin
+// Create a Constraints that defines when the task should run
+val myConstraints = Constraints.Builder()
+        .setRequiresDeviceIdle(true)
+        .setRequiresCharging(true)
+        // Many other constraints are available, see the
+        // Constraints.Builder reference
+        .build()
+
+val compressionWork = OneTimeWorkRequestBuilder<CompressWorker>()
+        .setConstraints(myConstraints)
+        .build()
+```
+
+取消任务：
+
+```kotlin
+val compressionWorkId:UUID = compressionWork.getId()
+WorkManager.getInstance().cancelWorkById(compressionWorkId)
+```
+
+监听任务状态：
+
+```kotlin
+WorkManager.getInstance().getStatusById(compressionWork.id)
+                .observe(lifecycleOwner, Observer { workStatus ->
+                    // Do something with the status
+                    if (workStatus != null && workStatus.state.isFinished) {
+                        // ...
+                    }
+                })
+```
+
+创建周期性的任务：
+
+```kotlin
+val photoCheckBuilder =
+        PeriodicWorkRequestBuilder<PhotoCheckWorker>(12, TimeUnit.HOURS)
+// ...if you want, you can apply constraints to the builder here...
+
+// Create the actual work object:
+val photoCheckWork = photoCheckBuilder.build()
+// Then enqueue the recurring task:
+WorkManager.getInstance().enqueue(photoCheckWork)
+```
+
+WorkManager还支持链式任务, 但一旦其中的某个任务失败，整个任务链就会中断结束：
+
+```kotlin
+WorkManager.getInstance()
+    .beginWith(workA)
+        // Note: WorkManager.beginWith() returns a
+        // WorkContinuation object; the following calls are
+        // to WorkContinuation methods
+    .then(workB)    // FYI, then() returns a new WorkContinuation instance
+    .then(workC)
+    .enqueue()
 
 
+val chain1 = WorkManager.getInstance()
+    .beginWith(workA)
+    .then(workB)
+val chain2 = WorkManager.getInstance()
+    .beginWith(workC)
+    .then(workD)
+val chain3 = WorkContinuation
+    .combine(chain1, chain2)
+    .then(workE)
+chain3.enqueue()
+```
+
+从任务中获取结果内容：
+
+```kotlin
+// Define the parameter keys:
+const val KEY_X_ARG = "X"
+const val KEY_Y_ARG = "Y"
+const val KEY_Z_ARG = "Z"
+
+// ...and the result key:
+const val KEY_RESULT = "result"
+
+// Define the Worker class:
+class MathWorker : Worker()  {
+
+    override fun doWork(): Result {
+        val x = inputData.getInt(KEY_X_ARG, 0)
+        val y = inputData.getInt(KEY_Y_ARG, 0)
+        val z = inputData.getInt(KEY_Z_ARG, 0)
+
+        // ...do the math...
+        val result = myCrazyMathFunction(x, y, z);
+
+        //...set the output, and we're done!
+        val output: Data = mapOf(KEY_RESULT to result).toWorkData()
+        setOutputData(output)
+
+        return Result.SUCCESS
+    }
+}
+
+//通过setInputData设置参数
+val myData: Data = mapOf("KEY_X_ARG" to 42,
+                       "KEY_Y_ARG" to 421,
+                       "KEY_Z_ARG" to 8675309)
+                     .toWorkData()
+
+// ...then create and enqueue a OneTimeWorkRequest that uses those arguments
+val mathWork = OneTimeWorkRequestBuilder<MathWorker>()
+        .setInputData(myData)
+        .build()
+WorkManager.getInstance().enqueue(mathWork)
+
+//通过status.outputData获取结果
+WorkManager.getInstance().getStatusById(mathWork.id)
+        .observe(this, Observer { status ->
+            if (status != null && status.state.isFinished) {
+                val myResult = status.outputData.getInt(KEY_RESULT,
+                      myDefaultValue)
+                // ... do something with the result ...
+            }
+        })
+```
+
+​    **如何使用：**
+
+> ```groovy
+> dependencies {
+>     def work_version = "1.0.0-alpha04"
+> 
+>     implementation "android.arch.work:work-runtime:$work_version" // use -ktx for Kotlin
+> }
+> ```
 
 
 
