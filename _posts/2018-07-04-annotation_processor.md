@@ -12,7 +12,7 @@ tags: [Android, Annotation Processor]
 
 > 编译时注解只能根据注解生成源代码，而不能修改已有的代码
 
-
+<br/>
 
 ### 项目结构
 
@@ -67,7 +67,7 @@ tags: [Android, Annotation Processor]
 > > targetCompatibility = "1.7"
 > > ```
 
-
+<br/>
 
 ### 具体代码
 
@@ -414,7 +414,7 @@ tags: [Android, Annotation Processor]
      }
      ```
 
-     
+<br/>
 
 ### 自动生成的代码
 
