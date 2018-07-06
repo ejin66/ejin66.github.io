@@ -27,7 +27,7 @@ Flutter项目结构：
 
 
 
-- 配置文件pubspec.yaml
+- 配置文件pubspec.yaml  
 
   _app图标更改貌似只能在android/ios目录下修改原配置文件?_
 
@@ -67,7 +67,7 @@ Flutter项目结构：
 
 
 
-- Flutter 的几个特点
+- Flutter 的几个特点  
 
   _1. 入口函数_
 
@@ -137,28 +137,28 @@ Flutter项目结构：
 
   - ListView
 
-  - ListTile，ListView的模板Item
+  - ListTile        ListView的模板Item
 
   - Text
 
-    - softWrap   若为false，将视作text主轴上有无限空间，绘制时不会自动换行。若为true，会自动换行。
+    - softWrap          若为false，将视作text主轴上有无限空间，绘制时不会自动换行。若为true，会自动换行。
 
   - Icon  图标Widget
 
   - Row，Column
 
     - children
-    - mainAxisAlignment   主轴，column的主轴是Y轴
-    - crossAxisAlignment   辅轴，column的辅轴是X轴
+    - mainAxisAlignment         主轴，column的主轴是Y轴
+    - crossAxisAlignment         辅轴，column的辅轴是X轴
     - mainAxisSize
-      - MainAxisSize.min    相当于wrap_content
-      - MainAxisSize.max    相当于match_parent
+      - MainAxisSize.min      相当于wrap_content
+      - MainAxisSize.max      相当于match_parent
 
-  - Expanded，填满主轴的剩余空间；若主轴上有多个Expanded，则按child的factor来分配空间
+  - Expanded        填满主轴的剩余空间；若主轴上有多个Expanded，则按child的factor来分配空间
 
     - child    必须是 Row/Column/Flex 其中的一种
 
-  - Container   相当于给child widget套上一层容器，布局上可以设置padding/margin/transform等
+  - Container         相当于给child widget套上一层容器，布局上可以设置padding/margin/transform等
 
     - child
     - padding
