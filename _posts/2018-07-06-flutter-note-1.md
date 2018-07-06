@@ -27,7 +27,7 @@ Flutter项目结构：
 
 
 
-- 配置文件pubspec.yaml  
+- 配置文件pubspec.yaml<br/>
 
   _app图标更改貌似只能在android/ios目录下修改原配置文件?_
 
@@ -67,7 +67,7 @@ Flutter项目结构：
 
 
 
-- Flutter 的几个特点  
+- Flutter 的几个特点<br/>  
 
   _1. 入口函数_
 
