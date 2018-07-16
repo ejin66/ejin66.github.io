@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Flutter 下Android的打包安装
+title: Flutter 下常用命令
 tags: [Flutter]
 ---
 
@@ -31,3 +31,15 @@ tags: [Flutter]
 > flutter install
 >
 > 该命令是安装release包
+
+
+
+### 4. 获取第三方包
+
+>flutter packages get
+
+一开始使用的时候，会经常出现 `Got socket error trying to find package at http://pub.dartlang.org` 错误，设置各种代理都不行。最后发现，在官网上使用教程的开头，就已经提醒过了：
+
+> *If you’re in China, please read [this wiki article](https://github.com/flutter/flutter/wiki/Using-Flutter-in-China) first*. 
+
+通过设置PUB镜像来解决墙的问题。
