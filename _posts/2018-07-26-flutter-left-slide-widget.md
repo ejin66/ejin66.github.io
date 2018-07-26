@@ -30,7 +30,7 @@ tags: [Flutter]
 
 在RenderStack的performLayout中相关源码：
 
-```flutter
+```dart
 	while (child != null) {
       final StackParentData childParentData = child.parentData;
 
@@ -68,7 +68,7 @@ tags: [Flutter]
 
    widget代码如下：
 
-   ```flutter
+   ```dart
    class Slide2Widget extends SingleChildRenderObjectWidget {
      Offset offset;
    
@@ -103,7 +103,7 @@ tags: [Flutter]
 
    创建一个RenderBox:
 
-   ```flutter
+   ```dart
    class RenderSlideObject extends RenderProxyBox {
      Offset _offset = Offset.zero;
    
@@ -145,7 +145,7 @@ tags: [Flutter]
 
 2. **自定义Widget，继承StatefulWidget**
 
-   ```flutter
+   ```dart
    class SlideWidget extends StatefulWidget {
        ...
    }
@@ -157,7 +157,7 @@ tags: [Flutter]
 
 3. **在State类的build方法中构建视图**
 
-   ```flutter
+   ```dart
    Widget build(BuildContext context) {
        return Slide2Widget(
          offset: Offset(_x, 0.0),
@@ -240,7 +240,7 @@ tags: [Flutter]
 
    1. 为了隐藏删除按钮，child的宽度必须要水平满屏，如何获取屏幕宽度：
 
-      ```flutter
+      ```dart
       double getWindowSize() => window.physicalSize.width / window.devicePixelRatio;
       ```
 
@@ -248,7 +248,7 @@ tags: [Flutter]
 
    2. 超出屏幕的button高度如何跟它左边Widget一样？
 
-      ```flutter
+      ```dart
       IntrinsicHeight(
           child: Row(
           	crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -263,7 +263,7 @@ tags: [Flutter]
 
 4.  **完整代码**
 
-   ```flutter
+   ```dart
    import 'package:flutter/cupertino.dart';
    import 'package:flutter/material.dart';
    import 'package:flutter/rendering.dart';
