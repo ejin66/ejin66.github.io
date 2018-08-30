@@ -37,11 +37,11 @@ recyclerView.layoutManager = LinearLayoutManager()
 
 **调用流程如下：**
 
-![layout流程图]({{site.baseurl}}/assets/img/pexels/LayoutManager.jpg)
+![layout流程图]({{site.baseurl}}/assets/img/pexels/LayoutManager.png)
 
 **效果图：**
 
-![layout流程图]({{site.baseurl}}/assets/img/pexels/layoutmanager_vertical.jpg)
+![layout流程图]({{site.baseurl}}/assets/img/pexels/layoutmanager_vertical.png)
 
 **完整代码如下：**
 
@@ -126,7 +126,7 @@ class DemoLayoutManager : RecyclerView.LayoutManager() {
 
 **效果图：**
 
-![layout流程图]({{site.baseurl}}/assets/img/pexels/layoutmanager_card.jpg)
+![layout流程图]({{site.baseurl}}/assets/img/pexels/layoutmanager_card.png)
 
 **实现思路：**
 
