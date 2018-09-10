@@ -29,6 +29,18 @@ select {
 
 }
 
+.right2 {
+    right: 2rem
+}
+
+.right5 {
+    right: 5rem
+}
+
+.right4 {
+    right: 4rem
+}
+
 .textInput {
     padding: 8px;
     border: 1px solid grey;
@@ -108,7 +120,7 @@ select {
     position: absolute;
     top:0;
     bottom:0;
-    right: 2rem;
+    /*right: 0;*/
     margin: auto 0;
     border-radius: 50%;
     cursor: pointer;

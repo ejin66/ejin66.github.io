@@ -1,6 +1,399 @@
 <!DOCTYPE html>
 <html lang="en">
-<script>
-	window.location.href="http://184.170.209.216:11001/";
-</script>
+<head>
+    <meta charset="UTF-8">
+    <title>收藏夹</title>
+	<meta name="viewport" content="width=device-width, initial-scale=0.6, minimum-scale=0.6, maximum-scale=1.0, user-scalable=no" > 
+	<link rel="shortcut icon" type="image/x-icon" href="./assets/img/favorite.png">
+    <script src="./assets/js/jquery-3.2.1.min.js"></script>
+    <script src="./assets/js/vue.min.js"></script>
+    <script src="./assets/js/axios.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./assets/css/main.css"/>
+    <style>
+
+        ol {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0.2rem;
+            padding-bottom: 0.8rem;
+        }
+        li {
+            padding-top: 0.8rem;
+        }
+
+        .group .tag {
+            display: block;
+            background-color: #5c8050;
+            font-size: 20px;
+            color: white;
+            padding-left: 2rem;
+            left: 0;
+            right: 0;
+            height: 3rem;
+            line-height: 3rem;
+            border-bottom: 1px solid #999999;
+        }
+
+        .group .desc {
+            background: #d9d9d9;
+            position: relative;
+            display: none;
+        }
+
+        .cover #close {
+            width: 2rem;
+            height: 2rem;
+            cursor: pointer;
+            position: fixed;
+            top:2rem;
+            right: 3rem;
+        }
+
+        .cover #addDesc{
+            width: 50%;
+            background: white;
+            border: 1px solid dimgray;
+            border-radius: 1rem;
+        }
+
+        #addDesc select{
+            width: 30%;
+        }
+
+        #addDesc .textInput{
+            width: 70%;
+        }
+
+        .labelRight {
+            margin-left: 1rem;
+        }
+
+        .dialog_div > div {
+            margin-top: 1rem;
+        }
+
+        #doAdd {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        #bookmark {
+            margin-top:4rem;
+            position: relative; 
+            left: 2rem; 
+            top: 1rem;
+            display: none;
+        }
+
+    	#detail {
+    		margin-top:4rem;
+    	}
+
+        .bookmark_group {
+            margin: 1rem
+        }
+
+        .bookmark_group .card {
+            width: 30%; 
+            margin: 10px; 
+            padding: 5px;
+            background-color: white; 
+            min-width: 200px;
+            display: inline-block;
+            box-shadow: 2px 2px 5px #888888;
+        }
+
+        .card textarea {
+            width: 90%; 
+            margin-top: 1rem;
+            resize: none
+        }
+
+        .card img {
+            float: right; 
+            width: 25px; 
+            cursor: pointer;
+        }
+
+    </style>
+	
+</head>
+<body>
+
+    <div class="header">
+        <strong><span class="title">我的收藏夹</span></strong>
+        <img class="avatar right5" id="add" src="./assets/img/add.png" />
+		<img class="avatar right2" id="open" src="./assets/img/open.png" />
+    </div>
+
+    <div id="bookmark">
+        <strong><span class="label">书签/待做事项：</span></strong>
+
+        <img id="addBookmark" src="./assets/img/add_no_circle.png" style="float:right;margin-right: 4rem; width: 1.5rem; cursor: pointer">
+
+        <div class="bookmark_group">
+            <bookmark v-for="bookmark of bookmarks" :id="bookmark.id" :desc="bookmark.desc" :url="bookmark.url" ></gt>
+        </div>
+    </div>
+
+    <div id="detail">
+        <gt v-for="group of groupData" :name="group.tagName" :items="group.items" ></gt>
+    </div>
+
+
+    <div id="add" class="cover">
+
+        <img src="./assets/img/close.png" id="close" />
+
+        <div class="group center" id="addDesc">
+
+            <div class="dialog_div" id="dialog_favorite">
+                <div>
+                    <label for="type">类型:</label>
+                    <select id="type" class="labelRight" v-model="selectedId">
+                        <option value="0" selected disabled>请选择</option>
+                        <option  v-for="item of tags" :value="item.id">
+                            {{item.tagName}}
+                        </option>
+                    </select>
+                </div>
+                <div>
+                    <label for="type">内容:</label>
+                    <input class="textInput labelRight" v-model="name"/>
+                </div>
+                <div>
+                    <label for="type">链接:</label>
+                    <input class="textInput labelRight" v-model="url"/>
+                </div>
+
+
+                <input type="button" class="button centerHorizontal" value="增加" id="doAdd" @click="doAdd"/>
+            </div>
+
+            <div class="dialog_div"  id="dialog_bookmark">
+
+                <div>
+                    <label for="type" style="vertical-align: top;">描述:</label>
+                    <textarea class="textInput labelRight" rows="3" placeholder="任务详情描述"  v-model="desc"></textarea>
+                </div>
+                <div>
+                    <label for="type">链接:</label>
+                    <input class="textInput labelRight" v-model="url"/>
+                </div>
+
+
+                <input type="button" class="button centerHorizontal" value="增加" id="doAdd" @click="doAddBookmark"/>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+        var domain = "http://184.170.209.216:11001/";
+        var items = []
+        var groupData = []
+        var tags = []
+        var bookmarks = []
+
+        var groupTemplate = {
+            props: ['name', 'items'],
+            methods: {
+                descClick:function (event) {
+                    toggle(event.currentTarget)
+                }
+            },
+            template: '<div class="group"><span class="tag" @click="descClick($event)">{{name}}</span><div class="desc"><ol><li v-for="item of items"><a target="_blank" :href="item.url">{{item.content}}</a></li></ol></div></div>'
+        };
+        var vueGroup = new Vue({
+            el:"#detail",
+            data: {
+                groupData:groupData
+            },
+            components: {
+                'gt': groupTemplate
+            }
+        })
+
+        var bookmarkTemplate = {
+            props: ['id', 'desc', 'url'],
+            methods: {
+                deleteBookmark:function (id) {
+                    deleteBookmark(id)
+                },
+            },
+            template: `
+                            <div class="card">
+                                <textarea class="textInput centerHorizontal" rows="3" readonly>{{desc}}</textarea>
+                                <div style="margin: 10px">
+                                    <a target="_blank" :href="url" v-if="url != ''">原文链接</a>
+                                    <span v-else>&nbsp;</span>
+                                    <img src="./assets/img/delete.png" @click="deleteBookmark(id)"></img>
+                                </div>
+                            </div>
+                     `
+        };
+
+        var bookmarkGroup = new Vue({
+            el:"#bookmark",
+            data: {
+                bookmarks:bookmarks
+            },
+            components: {
+                'bookmark': bookmarkTemplate
+            }
+        })
+
+        var vueTag = new Vue({
+            el:"#dialog_favorite",
+            data: {
+                tags:tags,
+                selectedId:0,
+                name:"",
+                url:""
+            },
+            methods: {
+                doAdd:function () {
+                    if (this.selectedId === 0 || this.name ==="" || this.url ==="") {
+                        alert("信息不完整")
+                        return
+                    }
+                    add(this.selectedId, this.name, this.url)
+                }
+            }
+        })
+
+        new Vue({
+            el:"#dialog_bookmark",
+            data: {
+                desc:"",
+                url:""
+            },
+            methods: {
+                doAddBookmark:function () {
+                    if (this.desc ==="") {
+                        alert("信息不完整")
+                        return
+                    }
+                    addBookmark(this.desc, this.url)
+                }
+            }
+        })
+
+        function toggle(e) {
+            $(e).parent().find(".desc").slideToggle("fast");
+        }
+
+        $("#add").click(function () {
+            $("#dialog_favorite").show();
+            $("#dialog_bookmark").hide();
+            $(".cover").fadeToggle()
+        })
+
+        $("#addBookmark").click(function () {
+            $("#dialog_favorite").hide();
+            $("#dialog_bookmark").show();
+            $(".cover").fadeToggle()
+        })
+
+        $("#close").click(function () {
+            $(".cover").fadeToggle()
+        })
+
+        $("#open").click(function () {
+            $("#bookmark").slideToggle("fast");
+        })
+
+        function add(id,name,url) {
+            $.post(domain + "add", {
+                id:id,
+                content:name,
+                url:url
+            }, function (data, status) {
+                if (data == 1) {
+                    getContent();
+                    alert("操作成功")
+                } else {
+                    alert("操作失败")
+                }
+            })
+        }
+
+        function addBookmark(desc, url) {
+            //TODO add bookmark, url: domain/bookmark/add
+            $.post(domain + "bookmark/add", {
+                desc:desc,
+                url:url
+            }, function (data, status) {
+                if (data == 1) {
+                    getBookmarks();
+                    alert("操作成功")
+                } else {
+                    alert("操作失败")
+                }
+            })
+        }
+
+        function deleteBookmark(id) {
+            //TODO delete bookmark, url: domain/bookmark/delete
+            $.post(domain + "bookmark/delete", {
+                id:id
+            }, function (data, status) {
+                if (data == 1) {
+                    getBookmarks();
+                    alert("操作成功")
+                } else {
+                    alert("操作失败")
+                }
+            })
+        }
+
+        function  getContent() {
+            $.post(domain + "desc", function (data, status) {
+                vueGroup.groupData = JSON.parse(data)
+            })
+        }
+
+        function getTags() {
+            $.post(domain + "tags", function (data, status) {
+                vueTag.tags = JSON.parse(data)
+            })
+        }
+
+        function getBookmarks() {
+            //TODO 获取bookmarks
+            // $.post(domain + "bookmark/all", function (data, status) {
+            //     bookmarkGroup.bookmarks = JSON.parse(data)
+            // })
+            bookmarkGroup.bookmarks = [{
+                    id: 1,
+                    desc: "desc 123456",
+                    url: "http://www.baidu.com"
+                },
+                {
+                    id: 2,
+                    desc: "desc 123456789",
+                    url: ""
+                }
+                ,
+                {
+                    id: 3,
+                    desc: "desc 无url",
+                    url: "http://www.baidu.com"
+                }]
+        }
+
+        function initData() {
+            getBookmarks();
+            getContent();
+            getTags();
+        }
+        
+	initData();
+    </script>
+</body>
 </html>
