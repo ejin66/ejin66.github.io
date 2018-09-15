@@ -370,15 +370,15 @@ set CC=arm-linux-gnueabi-gcc
 
 ### 2. NDK生成so库，JNI调用
 
+#### 2.1 NDK调用还是不成功？
+
 经历重重艰险，成功的生成了so库，万里长征走了一半，希望下面能够一帆风顺。。。
 
 >  关于用`NDK`生成so库，不了解的可以参考下：[NDK开发总结](https://ejin66.github.io/2018/01/08/android-ndk.html)。
 
-目前进度：NDK调用该动态链接库总是失败。。。
+但是，，，NDK调用该动态链接库总是失败。。。
 
-so库的编译环境是 arm/linux， gcc是arm-linux-guneabi-gcc。
-
-怀疑平台还有有差异，重新设置go build环境参数：
+猜测原因：so库的编译环境是 arm/linux， gcc是arm-linux-guneabi-gcc。而android平台还是有差异，重新设置go build环境参数：
 
 ```bash
 set GOARCH=arm
@@ -402,4 +402,157 @@ _cgo_export.c:3:20: fatal error: stdlib.h: No such file or directory
 compilation terminated.
 ```
 
-目前卡在这里，后续在更新。。。
+曾一度卡在这里，最后还是找到了解决方案：还需要设置 `--sysroot` 以及 `CGO_LDFLAGS`:
+
+```bash
+set CGO_LDFLAGS=--sysroot=%NDK_ROOT%/platforms/android-21/arch-arm
+set CC=arm-linux-androideabi-gcc --sysroot=%NDK_ROOT%\platforms\android-21\arch-arm
+```
+
+`android` 平台的so库终于成功生成了（喜大普奔）。。。
+
+<br/>
+
+#### 2.2 Cmake & JNI
+
+既然so库正确了，那后面就顺畅了。。。
+
+`native方法`：
+
+```java
+package com.ejin.ndk;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+
+    // Used to load the 'native-lib' library on application startup.
+    static {
+        System.loadLibrary("godemo");
+        System.loadLibrary("native-lib");
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Example of a call to a native method
+        TextView tv = (TextView) findViewById(R.id.sample_text);
+        tv.setText(stringFromJNI("ejin"));
+    }
+
+    /**
+     * A native method that is implemented by the 'native-lib' native library,
+     * which is packaged with this application.
+     */
+    public native String stringFromJNI(String s);
+}
+```
+
+`native-lib.c`:
+
+```c
+#include <jni.h>
+#include <string.h>
+#include "include/libgodemo.h"
+
+
+JNIEXPORT jstring JNICALL
+Java_com_ejin_ndk_MainActivity_stringFromJNI(JNIEnv *env, jobject instance, jstring s_) {
+    const char *s = (*env)->GetStringUTFChars(env, s_, 0);
+
+    GoString goString;
+    goString.p = s;
+    goString.n = strlen(s);
+
+    return (*env)->NewStringUTF(env, hello(goString));
+}
+```
+
+`CMakeLists.txt`：
+
+```yaml
+# For more information about using CMake with Android Studio, read the
+# documentation: https://d.android.com/studio/projects/add-native-code.html
+
+# Sets the minimum version of CMake required to build the native library.
+
+#设置cmake支持的最小版本
+cmake_minimum_required(VERSION 3.4.1)
+
+# Creates and names a library, sets it as either STATIC
+# or SHARED, and provides the relative paths to its source code.
+# You can define multiple libraries, and CMake builds them for you.
+# Gradle automatically packages shared libraries with your APK.
+
+#设置生成的so动态库最后输出的路径
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/jni/${ANDROID_ABI})
+
+#头文件路径
+include_directories("src/main/jniLibs/include")
+
+#配置文件
+file(GLOB native_srcs "src/main/jniLibs/*.c")
+
+#配置生成的so库的配置。
+#第一次参数：生产的so库名称
+#第二个参数：生成的so库的类型，SHARED代表动态链接库.so，STATIC代表静态库.a
+#第三个开始的参数：生成库所包括的代码文件。可以枚举，也可以用上面定义的文件集合：{native_srcs}
+add_library( # Sets the name of the library.
+             native-lib
+
+             # Sets the library as a shared library.
+             SHARED
+
+             # Provides a relative path to your source file(s).
+             ${native_srcs} )
+
+add_library(godemo
+            SHARED
+            IMPORTED
+)
+
+set_target_properties(godemo
+                    PROPERTIES IMPORTED_LOCATION
+                    ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libgodemo.so
+)
+
+# Searches for a specified prebuilt library and stores the path as a
+# variable. Because CMake includes system libraries in the search path by
+# default, you only need to specify the name of the public NDK library
+# you want to add. CMake verifies that the library exists before
+# completing its build.
+
+#查找库。
+#第一个参数：定义变量名，表示查找的库
+#第二个参数：需要查找的本地库
+find_library( # Sets the name of the path variable.
+              log-lib
+
+              # Specifies the name of the NDK library that
+              # you want CMake to locate.
+              log )
+
+# Specifies libraries CMake should link to your target library. You
+# can link multiple libraries, such as libraries you define in this
+# build script, prebuilt third-party libraries, or system libraries.
+
+#关联本地库到目标生成库
+target_link_libraries( # Specifies the target library.
+                       native-lib
+
+                       ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libgodemo.so
+                       # Links the target library to the log library
+                       # included in the NDK.
+                       ${log-lib} )
+```
+
+最后，效果图：
+
+![效果图]({{site.baseurl}}/assets/img/pexels/go_to_android.png)
+
+#### 2.3 项目地址
+
