@@ -552,7 +552,7 @@ target_link_libraries( # Specifies the target library.
 
 最后，效果图：
 
-![效果图]({{site.baseurl}}/assets/img/pexels/go_to_android.png)
+![效果图]({{site.baseurl}}/assets/img/pexels/go-to-android.png)
 
 #### 2.3 项目地址
 
