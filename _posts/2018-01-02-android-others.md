@@ -20,7 +20,7 @@ Scroller mScroll = new Sccroller(mContext,new DecelerateInterpolator());//支持
 
 **复写computeScroll方法：**
 
-```
+```java
 public void cpmputeScroll() {
         if( mScroller.computeScrollOffset()) {
                 //int curY = mScroll.getCurrY();
@@ -42,7 +42,7 @@ public void cpmputeScroll() {
 mScroll.startScroll(int startX,int startY, int dX, int dY, int duration)
 ```
 
-
+<br/>
 
 #### 2.  在TextView中绘制图片
 
@@ -60,7 +60,7 @@ ss.setSpan(span, 0, "easy".length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 append(ss);  
 ```
 
-
+<br/>
 
 #### 3. ListView.onDraw中绘制的内容不在最顶层
 
@@ -76,7 +76,7 @@ append(ss);
 
 在dispatchDraw()中绘制就可以了。
 
-
+<br/>
 
 #### 4. Fragment -- add/replace的区别
 
@@ -90,5 +90,72 @@ append(ss);
 
 ![Fragment生命周期]({{ site.baseurl }}/assets/img/pexels/fragmentLifeCycle.png)
 
+<br/>
 
+#### 5. Activity切换的简单处理
+
+定义style:
+
+```xml
+<style name="ActivityInOutAnimation" parent="@android:style/Animation.Activity">
+         <item name="android:activityOpenEnterAnimation">@anim/in_right</item>
+         <item name="android:activityOpenExitAnimation">@anim/out_left</item>
+         <item name="android:activityCloseEnterAnimation">@anim/in_left</item>
+         <item name="android:activityCloseExitAnimation">@anim/out_right</item>
+</style>
+```
+
+其中，4个`anim`如下：
+
+```xml
+in_left:
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate 
+        android:fromXDelta="-100%"
+        android:toXDelta="0%"
+        android:duration="200"/>
+</set>
+
+in_right:
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate 
+        android:fromXDelta="100%"
+        android:toXDelta="0%"
+        android:duration="200"/>
+</set>
+
+out_left:
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate 
+        android:fromXDelta="0%"
+        android:toXDelta="-100%"
+        android:duration="200"/>
+</set>
+
+out_right:
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate 
+        android:fromXDelta="0%"
+        android:toXDelta="100%"
+        android:duration="200"/>
+</set>
+```
+
+定义主题：
+
+```xml
+<style name="NormalTheme" parent="android:Theme.Light.NoTitleBar">
+        <item name="android:windowAnimationStyle">@style/ActivityInOutAnimation</item>
+</style>
+```
+
+使用主题：
+
+```xml
+android:theme="@style/NormalTheme"
+```
 

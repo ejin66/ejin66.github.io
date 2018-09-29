@@ -1,6 +1,6 @@
 ---
 layout: post
-title: concurrent包中相关类整理
+title: Concurrent包中相关类的整理
 tags: [Java, Concurrent]
 ---
 
@@ -111,7 +111,7 @@ latch.countDown()
 
 ### `Semaphore`
 
-计数信号量。初始化的时候，可以设置一个数量的“许可”。每`acquire()`或者`acquire(n)`，同时申请一个或者n个“许可”，若能申请成功，执行接下来的流程；若无法申请，会阻塞线程并等待“许可”通过；每`release()`会释放一个或者n个“许可”。
+计数信号量。初始化的时候，可以设置一个数量的“许可”。每`acquire()`或者`acquire(n)`，同时申请一个或者n个“许可”，若能申请成功，执行接下来的流程；若无法申请，会阻塞线程并等待“许可”通过；每`release()`会释放一个“许可”。
 
 初始化`Semaphore`:
 
