@@ -108,8 +108,8 @@ class DemoActivity : AppCompatActivity() {
 
   - m:  保存透视投影矩阵的`float array`
   - offset:  the offset into float array m where the perspective matrix data is written
-  - left/right/bottom/top:  近面上下左右的比例
-  - near:  相机到近面的距离
+  - left/right/bottom/top:  近面裁剪到的区域。即以相机视点中心点为中心，上下左右范围内的视图会投影到近面。
+  - near:  相机到近面的距离。近面离相机越远，投影显示越大；离目标中心点越近，投影显示越大。
   - far:  相机到远面的距离
 
   > 后六个参数设定了一个可见的视锥体，不在该范围内的就被裁剪掉，不会显示出来。视锥体内的物体最后会映射到近面并展现到屏幕上。
