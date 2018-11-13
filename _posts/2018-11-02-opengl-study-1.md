@@ -4,7 +4,7 @@ title: OpenGL基础整理
 tags: [OpenGL]
 ---
 
-### A. `GLSurfaceView` 基础知识
+### 1. `GLSurfaceView` 基础知识
 
 `GLSurfaceView` 继承自 `SurfaceView`，并在其基础上增加了 `OpenGL` 环境，使我们能够快速的开发 `OpenGL`。
 
@@ -46,7 +46,7 @@ class DemoActivity : AppCompatActivity() {
 
 <br/>
 
-### B. `OpenGLES` 基础知识
+### 2. `OpenGLES` 基础知识
 
 `OpenGLES` 是 `OpenGL` 的定制版本，下面以`OpenGLES 2.0` 为例。
 
@@ -56,6 +56,7 @@ class DemoActivity : AppCompatActivity() {
 - `片元着色器`（fragment shader）
 - 世界坐标系。遵循右手坐标系，即拇指、食指、其余指为x、y、z轴
 - 透视投影
+- 正交投影
 - 相机位置
 
 #### b. `OpenGLES` 绘制的一个基本流程：
@@ -113,6 +114,16 @@ class DemoActivity : AppCompatActivity() {
   - far:  相机到远面的距离
 
   > 后六个参数设定了一个可见的视锥体，不在该范围内的就被裁剪掉，不会显示出来。视锥体内的物体最后会映射到近面并展现到屏幕上。
+
+- `Matrix.orthoM（m, offset, left, right, bottom, top, near, far）` 设置正交投影矩阵
+
+  - m:  保存透视投影矩阵的`float array`
+  - offset:  the offset into float array m where the perspective matrix data is written
+  - left/right/bottom/top:  近面裁剪到的区域。即以相机视点中心点为中心，上下左右范围内的视图会投影到近面。
+  - near:  相机到近面的距离。
+  - far:  相机到远面的距离。
+
+  > 后六个参数设定了一个可见的长方体。无论near面的远近，最后投影的显示都是一样大的。
 
 - `Matrix.setLookAtM(rm, rmOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ)`
 
@@ -177,7 +188,7 @@ class DemoActivity : AppCompatActivity() {
 
 <br/>
 
-### C. 正方体的代码示例
+### 3. 正方体的代码示例
 
 ```kotlin
 class Cube : GLSurfaceView.Renderer {
