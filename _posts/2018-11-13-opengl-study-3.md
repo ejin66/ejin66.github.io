@@ -72,7 +72,7 @@ tags: [OpenGL]
 
       ```kotlin
       textureHandler = GLES20.glGetUniformLocation(mProgram, "vTexture")
-      //x代表纹理单元的索引，0/1/2...依次排下来的。即绑定到GLES20.GL_TEXTURE_2D纹理的索引
+      //0表示GLES20.GL_TEXTURE0，1表示GLES20.GL_TEXTURE1, 以此类推
       GLES20.glUniform1i(textureHandler, 0)
       ```
 
@@ -243,7 +243,7 @@ class BitmapTexture(var mContext: Context): GLSurfaceView.Renderer {
 
         createTexture()
 
-        //代表纹理单元的索引，0/1/2...依次排下来的。即绑定到GLES20.GL_TEXTURE_2D纹理的索引
+        //0表示GLES20.GL_TEXTURE0，1表示GLES20.GL_TEXTURE1, 以此类推
         GLES20.glUniform1i(textureHandler, 0)
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, sPos.size / 2)
