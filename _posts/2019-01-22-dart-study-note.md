@@ -66,7 +66,6 @@ tags: [Dart]
    ```dart
    var loudify = (msg) => '!!! ${msg.toUpperCase()} !!!';
    list.forEach((item) => print('{list.indexOf(item)}: item'));
-   
    ```
 
 12. 特殊的分配操作符'??='。 只有在变量为null时才会给变量分配。
