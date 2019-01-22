@@ -142,9 +142,7 @@ tags: [Dart]
    	print('In Point.fromJson(): (x, y)');
    }
    ```
-
-   > fromJson是类Point的Named constructors, ':'后面的是 Initializer list。在Initializer list中，无法使用关键字'this'
-
+   > fromJson是类Point的Named constructors, ':'后面的是 Initializer list。在Initializer list中，无法使用关键字'this'.
 22. 成员变量的 getter/setter.
    ```dart
    class Rectangle {
@@ -169,9 +167,7 @@ tags: [Dart]
      Vector operator -(Vector v) => Vector(x - v.x, y - v.y);
    }
    ```
-
    > 如果要重写'=='操作符，必须重写hashcode方法。
-
 25. mixins. 通过关键字'with'实现代码复用。被复用的类不能定义构造方法，且如果被复用类没有其他的用途，可使用关键字'mixin'代替'class'.
    ```dart
    mixin Musical {
@@ -229,22 +225,22 @@ tags: [Dart]
 	```
 
 29. Callable classes. 允许类实例像方法一样调用。要求class先实现call方法。
-   ```dart
-   class WannabeFunction {
-     call(String a, String b, String c) => 'a b $c!';
-   }
-   
-   main() {
-     var wf = WannabeFunction();
-     var out = wf("Hi","there,","gang");
-     print('$out');
-   }
-   ```
+	```dart
+	class WannabeFunction {
+		call(String a, String b, String c) => 'a b $c!';
+	}
+
+	main() {
+		var wf = WannabeFunction();
+		var out = wf("Hi","there,","gang");
+		print('$out');
+	}
+	```
 
 30. typedef 关键字。 给一个方法类型设定一个类型别名。
-   ```dart
-   typedef Compare = int Function(Object a, Object b);
-   ```
+	```dart
+	typedef Compare = int Function(Object a, Object b);
+	```
 
 31. Metadata(注解). Two annotations are available to all Dart code: @deprecated and @override.
 
