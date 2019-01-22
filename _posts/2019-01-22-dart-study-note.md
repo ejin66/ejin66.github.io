@@ -62,31 +62,31 @@ tags: [Dart]
 		- 设置入参默认值：String say(String from, String msg, [String device = "android"])
 
 11. 匿名方法。
-   ```dart
-   var loudify = (msg) => '!!! ${msg.toUpperCase()} !!!';
-   list.forEach((item) => print('{list.indexOf(item)}: item'));
-   ```
+	```dart
+	var loudify = (msg) => '!!! ${msg.toUpperCase()} !!!';
+	list.forEach((item) => print('{list.indexOf(item)}: item'));
+	```
 
 12. 特殊的分配操作符'??='。 只有在变量为null时才会给变量分配。
-   ```dart
-    b ??= 1 
-    //等价于
-    b = b ?? 1.
-   ```
+	```dart
+		b ??= 1 
+		//等价于
+		b = b ?? 1.
+	```
 
 13. 判空操作符'??'。
-   ```dart
-   String playerName(String name) => name ?? 'Guest';
-   ```
+	```dart
+	String playerName(String name) => name ?? 'Guest';
+	```
 
 14. 瀑布式操作符'..'。
-    ```dart
-    void main() {
-      querySelector('#sample_text_id')
-    	..text = 'Click me!'
-    	..function-call()
-    }
-    ```
+	```dart
+	void main() {
+		querySelector('#sample_text_id')
+		..text = 'Click me!'
+		..function-call()
+	}
+	```
 
 15. 非空操作符'?.'。
 	- a?.print(). 当a为非空变量时，调用print()方法。
@@ -95,21 +95,20 @@ tags: [Dart]
 	- throw ...; 可以抛出任何类型，包括 Exception/Error/any objects
 
 	- 捕获异常时，若没有指定具体类型，表示捕获所有的被抛出的object
-
-	     ```dart
-	     try {
+	```dart
+	try {
 		breedMoreLlamas();
-	     } on OutOfLlamasException {
+	} on OutOfLlamasException {
 		 // A specific exception
 		 buyMoreLlamas();
-	     } on Exception catch (e) {
+	} on Exception catch (e) {
 		 // Anything else that is an exception
 		 print('Unknown exception: e');
-	     } catch (e) {
+	} catch (e) {
 		 // No specified type, handles all
 		 print('Something really unknown: e');
-	     }
-	     ```
+	}
+	```
 
 	- catch(e, s) 若catch定义两个入参，则's'表示报异常方法的调用栈信息。
 
@@ -136,67 +135,67 @@ tags: [Dart]
 20. 构造方法不能被继承。但可通过'Named constructors'实现。
 
 21. 实例初始化的过程： Initializer list -> super class constructor -> constructor.
-   ```dart
-   Point.fromJson(Map<String, num> json)
-   : x = json['x'],y = json['y'] {
-   	print('In Point.fromJson(): (x, y)');
-   }
-   ```
+	```dart
+	Point.fromJson(Map<String, num> json)
+		: x = json['x'],y = json['y'] {
+		print('In Point.fromJson(): (x, y)');
+	}
+	```
    > fromJson是类Point的Named constructors, ':'后面的是 Initializer list。在Initializer list中，无法使用关键字'this'.
 22. 成员变量的 getter/setter.
-   ```dart
-   class Rectangle {
-   	...
-     num get right => left + width;
-     set right(num value) => left = value - width;
-     num get bottom => top + height;
-     set bottom(num value) => top = value - height;
-   }
-   ```
+	```dart
+	class Rectangle {
+		...
+		num get right => left + width;
+		set right(num value) => left = value - width;
+		num get bottom => top + height;
+		set bottom(num value) => top = value - height;
+	}
+	```
 
 23. 每个类都默认定义了一个包括了所有成员的接口。其他的类可通过关键字'implements'来继承。
 
 24. 重写操作符。
-   ```dart
-   class Vector {
-     final int x, y;
-   
-     Vector(this.x, this.y);
-   
-     Vector operator +(Vector v) => Vector(x + v.x, y + v.y);
-     Vector operator -(Vector v) => Vector(x - v.x, y - v.y);
-   }
-   ```
+	```dart
+	class Vector {
+		final int x, y;
+
+		Vector(this.x, this.y);
+
+		Vector operator +(Vector v) => Vector(x + v.x, y + v.y);
+		Vector operator -(Vector v) => Vector(x - v.x, y - v.y);
+	}
+	```
    > 如果要重写'=='操作符，必须重写hashcode方法。
 25. mixins. 通过关键字'with'实现代码复用。被复用的类不能定义构造方法，且如果被复用类没有其他的用途，可使用关键字'mixin'代替'class'.
-   ```dart
-   mixin Musical {
-     bool canPlayPiano = false;
-     bool canCompose = false;
-     bool canConduct = false;
-   
-     void entertainMe() {
-   	if (canPlayPiano) {
-   	  print('Playing piano');
-   	} else if (canConduct) {
-   	  print('Waving hands');
-   	} else {
-   	  print('Humming to self');
-   	}
-     }
-   }
-   class Musician extends Performer with Musical {
-     // ···
-   }
-   ```
+	```dart
+	mixin Musical {
+		bool canPlayPiano = false;
+		bool canCompose = false;
+		bool canConduct = false;
+
+		void entertainMe() {
+			if (canPlayPiano) {
+			  print('Playing piano');
+			} else if (canConduct) {
+			  print('Waving hands');
+			} else {
+			  print('Humming to self');
+			}
+		}
+	}
+	class Musician extends Performer with Musical {
+		// ···
+	}
+	```
 
 26. 库的懒加载。使用关键字'deferred as xxx'来实现。在使用该库时，需要先手动加载。
-   ```dart
-   Future greet() async {
-     await hello.loadLibrary();
-     hello.printGreeting();
-   }
-   ```
+	```dart
+	Future greet() async {
+		await hello.loadLibrary();
+		hello.printGreeting();
+	}
+	```
 
 27. 异步方法：await/async.
 	- await expression. expression 返回一个Future<T>类型，若原返回类型不是Future类型，会自动包装成Future类型。await expression会返回T object类型
@@ -211,16 +210,16 @@ tags: [Dart]
 	- 同步生成器:
 	```dart
 	Iterable<int> naturalsTo(int n) sync* {
-	   int k = 0;
-	   while (k < n) yield k++;
+		int k = 0;
+		while (k < n) yield k++;
 	}
 	```
 
 	- 异步生成器（通过aysnc for 使用 stream）：
 	```dart
 	Stream<int> asynchronousNaturalsTo(int n) async* {
-	   int k = 0;
-	   while (k < n) yield k++;
+		int k = 0;
+		while (k < n) yield k++;
 	}
 	```
 
