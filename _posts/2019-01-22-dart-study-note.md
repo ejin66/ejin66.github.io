@@ -70,7 +70,7 @@ tags: [Dart]
 
 12. 特殊的分配操作符'??='。 只有在变量为null时才会给变量分配。
 
-   - b ??= 1 等价于 b = b ?? 1
+   - b ??= 1 等价于 b = b ?? 1.
 
 13. 判空操作符'??'。
 
@@ -114,7 +114,7 @@ tags: [Dart]
 
    - catch(e, s) 若catch定义两个入参，则's'表示报异常方法的调用栈信息。
 
-   - rethrow; 在catch中调用rethrow可继续抛出该异常
+   - rethrow; 在catch中调用rethrow可继续抛出该异常。
 
 17. object.runtimeType 获取变量的类型。
 
