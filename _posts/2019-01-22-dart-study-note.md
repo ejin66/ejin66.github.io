@@ -53,14 +53,13 @@ tags: [Dart]
 9. 当能推断返回值类型时，方法返回类型可省略。当方法体内只有一行时，可使用 ... => ...。
 
 10. 方法定义中两种可选形式：
-  - Optional named parameters
-    - void test({bool arg1, String arg2})
-    - 设置必须的入参：void test({bool arg1, @required String arg2})
-    - 设置入参默认值： void test({bool arg1, String arg2 = "str123"})
-  - Optional positioned parameters
-    - String say(String from, String msg, [String device])
-
-    - 设置入参默认值：String say(String from, String msg, [String device = "android"])
+	- Optional named parameters
+		- void test({bool arg1, String arg2})
+		- 设置必须的入参：void test({bool arg1, @required String arg2})
+		- 设置入参默认值： void test({bool arg1, String arg2 = "str123"})
+	- Optional positioned parameters
+		- String say(String from, String msg, [String device])
+		- 设置入参默认值：String say(String from, String msg, [String device = "android"])
 
 11. 匿名方法。
    ```dart
@@ -69,8 +68,11 @@ tags: [Dart]
    ```
 
 12. 特殊的分配操作符'??='。 只有在变量为null时才会给变量分配。
-
-   - b ??= 1 等价于 b = b ?? 1.
+   ```dart
+    b ??= 1 
+    //等价于
+    b = b ?? 1.
+   ```
 
 13. 判空操作符'??'。
 
@@ -90,31 +92,31 @@ tags: [Dart]
 
 15. 非空操作符'?.'。
 
-   - a?.print(). 当a为非空变量时，调用print()方法。
+	- a?.print(). 当a为非空变量时，调用print()方法。
 
 16. 抛异常/捕获异常。
-   - throw ...; 可以抛出任何类型，包括 Exception/Error/any objects
+	- throw ...; 可以抛出任何类型，包括 Exception/Error/any objects
 
-   - 捕获异常时，若没有指定具体类型，表示捕获所有的被抛出的object
+	- 捕获异常时，若没有指定具体类型，表示捕获所有的被抛出的object
 
-     ```dart
-     try {
-     	breedMoreLlamas();
-     } on OutOfLlamasException {
-         // A specific exception
-         buyMoreLlamas();
-     } on Exception catch (e) {
-         // Anything else that is an exception
-         print('Unknown exception: e');
-     } catch (e) {
-         // No specified type, handles all
-         print('Something really unknown: e');
-     }
-     ```
+	     ```dart
+	     try {
+		breedMoreLlamas();
+	     } on OutOfLlamasException {
+		 // A specific exception
+		 buyMoreLlamas();
+	     } on Exception catch (e) {
+		 // Anything else that is an exception
+		 print('Unknown exception: e');
+	     } catch (e) {
+		 // No specified type, handles all
+		 print('Something really unknown: e');
+	     }
+	     ```
 
-   - catch(e, s) 若catch定义两个入参，则's'表示报异常方法的调用栈信息。
+	- catch(e, s) 若catch定义两个入参，则's'表示报异常方法的调用栈信息。
 
-   - rethrow; 在catch中调用rethrow可继续抛出该异常。
+	- rethrow; 在catch中调用rethrow可继续抛出该异常。
 
 17. object.runtimeType 获取变量的类型。
 
@@ -210,32 +212,30 @@ tags: [Dart]
    ```
 
 27. 异步方法：await/async.
-   - await expression. expression 返回一个Future<T>类型，若原返回类型不是Future类型，会自动包装成Future类型。await expression会返回T object类型
+	- await expression. expression 返回一个Future<T>类型，若原返回类型不是Future类型，会自动包装成Future类型。await expression会返回T object类型
 
-   - 要使用await, 必须在async方法体中
+	- 要使用await, 必须在async方法体中
 
-   - 可使用try/catch 捕获 await expression 中的异常
+	- 可使用try/catch 捕获 await expression 中的异常
 
-   - 若在async方法中，没有定义返回值，默认返回Future<Void>
+	- 若在async方法中，没有定义返回值，默认返回Future<Void>
 
 28. Generators. 分同步生成器、异步生成器两种。同步生成器使用sync* + yield，返回Iterable类型。异步生成器使用async* + yield 返回Stream类型。
-   - 同步生成器:
+	- 同步生成器:
+	```dart
+	Iterable<int> naturalsTo(int n) sync* {
+	   int k = 0;
+	   while (k < n) yield k++;
+	}
+	```
 
-     ```dart
-     Iterable<int> naturalsTo(int n) sync* {
-         int k = 0;
-         while (k < n) yield k++;
-     }
-     ```
-
-   - 异步生成器（通过aysnc for 使用 stream）：
-
-     ```dart
-     Stream<int> asynchronousNaturalsTo(int n) async* {
-         int k = 0;
-         while (k < n) yield k++;
-     }
-     ```
+	- 异步生成器（通过aysnc for 使用 stream）：
+	```dart
+	Stream<int> asynchronousNaturalsTo(int n) async* {
+	   int k = 0;
+	   while (k < n) yield k++;
+	}
+	```
 
 29. Callable classes. 允许类实例像方法一样调用。要求class先实现call方法。
 
