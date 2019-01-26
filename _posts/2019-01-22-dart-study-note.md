@@ -152,7 +152,7 @@ tags: [Dart]
 19. 若没有定义构造方法，默认有一个没有入参的构造方法。
 <br/>
 
-20. 构造方法不能被继承。但可通过'Named constructors'实现。
+20. 构造方法不能被继承。
 <br/>
 
 21. 实例初始化的过程： Initializer list -> super class constructor -> constructor.
@@ -177,7 +177,7 @@ tags: [Dart]
 	```
 <br/>
 
-23. 每个类都默认定义了一个包括了所有成员的接口。其他的类可通过关键字'implements'来继承。
+23. 每个类都默认定义了一个包括了所有成员的接口(成员变量的getter/setter & 方法的 抽象化方法)。其他的类可通过关键字'implement'来继承。
 <br/>
 
 24. 重写操作符。
@@ -275,8 +275,6 @@ tags: [Dart]
 <br/>
 
 31. Metadata(注解). Two annotations are available to all Dart code: @deprecated and @override.
-
-
 
     
 
