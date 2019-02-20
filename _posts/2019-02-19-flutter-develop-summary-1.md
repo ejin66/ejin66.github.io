@@ -194,7 +194,7 @@ tags: [Flutter]
 
 9. ### 键盘弹出时window resize导致页面变形
 
-   通过设置`Scaffold.resizeToAvoidBottomPadding: false` 来避免该问题。
+   通过设置`Scaffold.resizeToAvoidBottomPadding` false 来避免该问题。
 
    <br/>
 
