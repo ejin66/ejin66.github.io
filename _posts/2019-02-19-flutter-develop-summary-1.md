@@ -104,11 +104,11 @@ tags: [Flutter]
 
    <br/>
 
-3.  ### ThemeData 简单解析
+3. ### ThemeData 简单解析
 
    `MaterialApp` 下的`theme`可以设置一系列的主题颜色，包括暗黑主题、ButtonThemeData、InputDecorationTheme等。后续再深入。
 
-<br/>
+   <br/>
 
 
 
@@ -116,7 +116,7 @@ tags: [Flutter]
 
    按钮控件有`RaisedButton`、`DropdownButton`、 `SimpleDialogOption`、`IconButton`、`InkWell`、`RawMaterialButton`。通过包裹`ButtonTheme`可以设置按钮的宽高、背景颜色等。
 
-<br/>
+   <br/>
 
 
 
@@ -139,9 +139,9 @@ tags: [Flutter]
 
    - `positioned` widget 通过调整`top/bottom/left/right` 来改变位置大小。如设置`left:0;right:0` 可使自身与`stack`同宽。
 
-     <br/>
+   <br/>
 
-7.  ### TabBar 的简单使用
+7. ### TabBar 的简单使用
 
    先看代码：
 
@@ -179,9 +179,9 @@ tags: [Flutter]
 
    - 通过`TabController.index`可以拿到当前选中的`tab`位置
 
-     <br/>
+   <br/>
 
-8.  ### TextField的简单使用
+8. ### TextField的简单使用
 
    - `obscureText` 设置输入是否隐藏
    - 通过`TextEditingController.text`获取输入值
@@ -192,110 +192,110 @@ tags: [Flutter]
 
    <br/>
 
-9.  ### 键盘弹出时window resize导致页面变形
+9. ### 键盘弹出时window resize导致页面变形
 
    通过设置`Scaffold.resizeToAvoidBottomPadding: false` 来避免该问题。
 
    <br/>
 
-10.  ### 转场动画
+10. ### 转场动画
 
-   `Flutter`中默认的转场动画是自下而上，而主流的转场动画是水平移动。借助`PageRouteBuilder`可自定义转场动画，代码示例：
+  `Flutter`中默认的转场动画是自下而上，而主流的转场动画是水平移动。借助`PageRouteBuilder`可自定义转场动画，代码示例：
 
-   ```dart
-   import 'package:flutter/material.dart';
-   
-   class HorizontalSlideRoute extends PageRouteBuilder {
-     HorizontalSlideRoute(Widget widget)
-         : super(
-               opaque: true,
-               pageBuilder: (_, __, ___) => widget,
-               transitionDuration: Duration(milliseconds: 200),
-               transitionsBuilder: (_, animation, secondaryAnimation, child) {
-                 return SlideTransition(
-                     position:
-                         Tween<Offset>(begin: Offset(1.0, 0.0), end: Offset.zero)
-                             .animate(animation),
-                     child: child);
-               });
-   }
-   ```
+  ```dart
+  import 'package:flutter/material.dart';
+  
+  class HorizontalSlideRoute extends PageRouteBuilder {
+    HorizontalSlideRoute(Widget widget)
+        : super(
+              opaque: true,
+              pageBuilder: (_, __, ___) => widget,
+              transitionDuration: Duration(milliseconds: 200),
+              transitionsBuilder: (_, animation, secondaryAnimation, child) {
+                return SlideTransition(
+                    position:
+                        Tween<Offset>(begin: Offset(1.0, 0.0), end: Offset.zero)
+                            .animate(animation),
+                    child: child);
+              });
+  }
+  ```
 
-   其中最主要是`transitionsBuilder`属性，其中：
+  其中最主要是`transitionsBuilder`属性，其中：
 
-   - `Animation<double> animation` 指新入栈的页面的过程动画，`Animation<double> secondaryAnimation`指当前页面的过程动画。`child`就是`pageBuilder` 返回的widget, 也就是新的页面。
-   - 借助`SlideTransition` 来实现水平移动动画。
+  - `Animation<double> animation` 指新入栈的页面的过程动画，`Animation<double> secondaryAnimation`指当前页面的过程动画。`child`就是`pageBuilder` 返回的widget, 也就是新的页面。
+  - 借助`SlideTransition` 来实现水平移动动画。
 
-   更进一步，封装一个转场类，避免每次都要传入该类：
+  更进一步，封装一个转场类，避免每次都要传入该类：
 
-   ```dart
-   import 'package:demo1/util/HorizontalSlideRoute.dart';
-   import 'package:flutter/widgets.dart';
-   
-   class PRoute {
-   
-     static PRoute _instance;
-   
-     Map<String, Widget> routeMap = {};
-   
-     PRoute._default();
-   
-     factory PRoute.get() {
-       if (_instance == null) {
-         _instance = PRoute._default();
-       }
-       return _instance;
-     }
-   
-     pushNameH(BuildContext context, String name) {
-       if (routeMap.containsKey(name)) {
-         pushH(context, routeMap[name]);
-       }
-     }
-   
-     replaceNameH(BuildContext context, String name) {
-       if (routeMap.containsKey(name)) {
-         replaceH(context, routeMap[name]);
-       }
-     }
-   
-     pushH(BuildContext context, Widget widget) {
-       Navigator.push(context, HorizontalSlideRoute(widget));
-     }
-   
-     replaceH(BuildContext context, Widget widget) {
-       Navigator.pushReplacement(context, HorizontalSlideRoute(widget));
-     }
-   
-     back(BuildContext context) {
-       Navigator.canPop(context)? Navigator.pop(context) : print("can not back");
-     }
-   
-     dismiss(BuildContext context) {
-       Navigator.canPop(context)? Navigator.pop(context) : print("can not dismiss");
-     }
-   
-   }
-   ```
+  ```dart
+  import 'package:demo1/util/HorizontalSlideRoute.dart';
+  import 'package:flutter/widgets.dart';
+  
+  class PRoute {
+  
+    static PRoute _instance;
+  
+    Map<String, Widget> routeMap = {};
+  
+    PRoute._default();
+  
+    factory PRoute.get() {
+      if (_instance == null) {
+        _instance = PRoute._default();
+      }
+      return _instance;
+    }
+  
+    pushNameH(BuildContext context, String name) {
+      if (routeMap.containsKey(name)) {
+        pushH(context, routeMap[name]);
+      }
+    }
+  
+    replaceNameH(BuildContext context, String name) {
+      if (routeMap.containsKey(name)) {
+        replaceH(context, routeMap[name]);
+      }
+    }
+  
+    pushH(BuildContext context, Widget widget) {
+      Navigator.push(context, HorizontalSlideRoute(widget));
+    }
+  
+    replaceH(BuildContext context, Widget widget) {
+      Navigator.pushReplacement(context, HorizontalSlideRoute(widget));
+    }
+  
+    back(BuildContext context) {
+      Navigator.canPop(context)? Navigator.pop(context) : print("can not back");
+    }
+  
+    dismiss(BuildContext context) {
+      Navigator.canPop(context)? Navigator.pop(context) : print("can not dismiss");
+    }
+  
+  }
+  ```
 
-   在`main()`开始时可设置route映射：
+  在`main()`开始时可设置route映射：
 
-   ```dart
-   void main() {
-     PRoute.get().routeMap = {
-       "login": Login(),
-     };
-     runApp(MyApp());
-   }
-   ```
+  ```dart
+  void main() {
+    PRoute.get().routeMap = {
+      "login": Login(),
+    };
+    runApp(MyApp());
+  }
+  ```
 
-   最后使用：
+  最后使用：
 
-   ```dart
-   PRoute.get().replaceNameH(context, "login");
-   ```
+  ```dart
+  PRoute.get().replaceNameH(context, "login");
+  ```
 
-   <br/>
+  <br/>
 
 11. ### 关于Redux
 
@@ -360,9 +360,11 @@ tags: [Flutter]
     2. 在其他地方，生成一个event(任何类型)。
     3. 通过`Driver.dispatch(event)` 分发出去，符合要求的已注册的方法会自动运行，相当于一个事件冒泡。
 
+    <br/>
+
     代码示例：
 
-    创建一个event:
+    1. 创建一个event
 
     ```dart
     class TestEvent {
@@ -378,7 +380,7 @@ tags: [Flutter]
     }
     ```
 
-    在某个`StatefulWidget State`中创建一个事件并注册：
+    2. 在某个`StatefulWidget State`中创建一个事件并注册：
 
     ```dart
     class _LoginState extends State<Login> {
@@ -401,7 +403,7 @@ tags: [Flutter]
     }
     ```
 
-    在其他页面中，通知页面更新：
+    3. 在其他页面中，通知页面更新：
 
     ```dart
     TestEvent event = TestEvent(2019);
