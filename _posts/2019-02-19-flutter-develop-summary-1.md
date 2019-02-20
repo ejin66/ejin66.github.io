@@ -200,12 +200,12 @@ tags: [Flutter]
 
 10. ### 转场动画
 
-  `Flutter`中默认的转场动画是自下而上，而主流的转场动画是水平移动。借助`PageRouteBuilder`可自定义转场动画，代码示例：
+   在`Flutter`中默认的转场动画是自下而上，而主流的转场动画是水平移动。借助`PageRouteBuilder`可自定义转场动画，代码示例：
 
-  ```dart
-  import 'package:flutter/material.dart';
-  
-  class HorizontalSlideRoute extends PageRouteBuilder {
+   ```dart
+   import 'package:flutter/material.dart';
+
+   class HorizontalSlideRoute extends PageRouteBuilder {
     HorizontalSlideRoute(Widget widget)
         : super(
               opaque: true,
@@ -218,84 +218,84 @@ tags: [Flutter]
                             .animate(animation),
                     child: child);
               });
-  }
-  ```
+   }
+   ```
 
-  其中最主要是`transitionsBuilder`属性，其中：
+   其中最主要是`transitionsBuilder`属性，其中：
 
-  - `Animation<double> animation` 指新入栈的页面的过程动画，`Animation<double> secondaryAnimation`指当前页面的过程动画。`child`就是`pageBuilder` 返回的widget, 也就是新的页面。
-  - 借助`SlideTransition` 来实现水平移动动画。
+   - `Animation<double> animation` 指新入栈的页面的过程动画，`Animation<double> secondaryAnimation`指当前页面的过程动画。`child`就是`pageBuilder` 返回的widget, 也就是新的页面。
+   - 借助`SlideTransition` 来实现水平移动动画。
 
-  更进一步，封装一个转场类，避免每次都要传入该类：
+   更进一步，封装一个转场类，避免每次都要传入该类：
 
-  ```dart
-  import 'package:demo1/util/HorizontalSlideRoute.dart';
-  import 'package:flutter/widgets.dart';
-  
-  class PRoute {
-  
+   ```dart
+   import 'package:demo1/util/HorizontalSlideRoute.dart';
+   import 'package:flutter/widgets.dart';
+
+   class PRoute {
+
     static PRoute _instance;
-  
+
     Map<String, Widget> routeMap = {};
-  
+
     PRoute._default();
-  
+
     factory PRoute.get() {
       if (_instance == null) {
         _instance = PRoute._default();
       }
       return _instance;
     }
-  
+
     pushNameH(BuildContext context, String name) {
       if (routeMap.containsKey(name)) {
         pushH(context, routeMap[name]);
       }
     }
-  
+
     replaceNameH(BuildContext context, String name) {
       if (routeMap.containsKey(name)) {
         replaceH(context, routeMap[name]);
       }
     }
-  
+
     pushH(BuildContext context, Widget widget) {
       Navigator.push(context, HorizontalSlideRoute(widget));
     }
-  
+
     replaceH(BuildContext context, Widget widget) {
       Navigator.pushReplacement(context, HorizontalSlideRoute(widget));
     }
-  
+
     back(BuildContext context) {
       Navigator.canPop(context)? Navigator.pop(context) : print("can not back");
     }
-  
+
     dismiss(BuildContext context) {
       Navigator.canPop(context)? Navigator.pop(context) : print("can not dismiss");
     }
-  
-  }
-  ```
 
-  在`main()`开始时可设置route映射：
+   }
+   ```
 
-  ```dart
-  void main() {
+   在`main()`开始时可设置route映射：
+
+   ```dart
+   void main() {
     PRoute.get().routeMap = {
       "login": Login(),
     };
     runApp(MyApp());
-  }
-  ```
+   }
+   ```
 
-  最后使用：
+   最后使用：
 
-  ```dart
-  PRoute.get().replaceNameH(context, "login");
-  ```
+   ```dart
+   PRoute.get().replaceNameH(context, "login");
+   ```
 
-  <br/>
+   <br/>
 
 11. ### 关于Redux
 
