@@ -6,7 +6,7 @@ tags: [Dart]
 
 Dart 中的 `metadata` ，就是Java 中的注解。我们知道，利用注解可以在Java编译期生成代码，那Dart的`metadata`也能够生成代码吗？
 
-答案是肯定的。在Dart处理`Json`时就是利用了注解`JsonSerializable`帮助我们生成了一部分代码，关于Json的基础操作可以参考 [这一篇](https://ejin66.github.io/2019/01/22/dart-study-note.html).
+答案是肯定的。在Dart处理`Json`时就是利用了注解`JsonSerializable`帮助我们生成了一部分代码，关于Json的基础操作可以参考 [这一篇](https://ejin66.github.io/2019/02/19/flutter-develop-summary-1.html).
 
 <br/>
 
