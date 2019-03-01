@@ -26,31 +26,44 @@ import 'package:jsoninflater/jsonInflater.dart';
 part 'model_test.g.dart';
 
 @JsonInflater()
-class JsonTest with PartOfJsonTest {
+class TestNonGenerics with PartOfTestNonGenerics {
 
   String msg;
 
-  JsonTest(this.msg);
+  TestNonGenerics(this.msg);
 
   @override
   String toString() {
-    return 'JsonTest{msg: $msg}';
+    return 'TestNonGenerics{msg: $msg}';
   }
 }
 
 @JsonInflater()
-class JsonTest2<K> with PartOfJsonTest2 {
+class TestGenerics1<K> with PartOfTestGenerics1 {
 
   String msg;
   K data;
 
-  JsonTest2(this.msg, this.data);
+  TestGenerics1(this.msg, this.data);
 
+  @override
+  String toString() {
+    return 'TestGenerics1{msg: $msg, data: $data}';
+  }
+}
+
+@JsonInflater()
+class TestGenerics2<K> with PartOfTestGenerics2 {
+
+  String msg;
+  K data;
+
+  TestGenerics2(this.msg, this.data);
 
 
   @override
   String toString() {
-    return 'JsonTest2{msg: $msg, data: $data}';
+    return 'TestGenerics2{msg: $msg, data: $data}';
   }
 }
 ```
@@ -58,27 +71,23 @@ class JsonTest2<K> with PartOfJsonTest2 {
 测试：
 
 ```dart
-import 'dart:convert';
-
 import 'package:jsoninflater/model_test.dart';
 
+
 main() {
+  var nonGenericsModel = TestNonGenerics("non generics");
+  var nonGenericsParse = parse<TestNonGenerics>(nonGenericsModel.toJson());
+  print("$nonGenericsParse, ${nonGenericsParse.runtimeType}"); // -> TestNonGenerics{msg: non generics}, TestNonGenerics
 
-  var test = JsonTest("json test");
 
-  var test2 = JsonTest2("json test 2", [test]);
+  var genericsModel1 = TestGenerics1<TestNonGenerics>("generics model 1", nonGenericsModel);
+  var genericsModel1Parse = parse2<TestGenerics1<TestNonGenerics>, TestNonGenerics>(genericsModel1.toJson());
+  print("$genericsModel1Parse, ${genericsModel1Parse.runtimeType}"); // -> TestGenerics1{msg: generics model 1, data: TestNonGenerics{msg: non generics}}, TestGenerics1<TestNonGenerics>
 
-  var parseTest = parse<JsonTest>(test.toJson());
 
-  print("$parseTest, ${parseTest.runtimeType}"); // -> JsonTest{msg: json test}, JsonTest
-
-  var parseTest2 = parse<JsonTest2<List<JsonTest>>>(test2.toJson());
-
-  print("$parseTest2, ${parseTest2.runtimeType}"); // -> JsonTest2{msg: json test 2, data: [JsonTest{msg: json test}]}, JsonTest2<dynamic>
-
-  var parseTest3 = PartOfJsonTest2.parse<List>(test2.toJson());
-
-  print("$parseTest3, ${parseTest3.runtimeType}"); // -> JsonTest2{msg: json test 2, data: [{msg: json test}]}, JsonTest2<List<dynamic>>
+  var genericsModel2 = TestGenerics2<TestGenerics1<List<String>>>("generics model 2", TestGenerics1("generics model 1", ["list 1", "list 2"]));
+  var genericsModel2Parse = parse4<TestGenerics2<TestGenerics1<List<String>>>, TestGenerics1<List<String>>, List<String>, String>(genericsModel2.toJson());
+  print("$genericsModel2Parse, ${genericsModel2Parse.runtimeType}"); // -> TestGenerics2{msg: generics model 2, data: TestGenerics1{msg: generics model 1, data: [list 1, list 2]}}, TestGenerics2<TestGenerics1<List<String>>>
 }
 ```
 
@@ -185,31 +194,46 @@ main() {
 
    ```dart
    @JsonInflater()
-   class JsonTest with PartOfJsonTest {
+   class TestNonGenerics with PartOfTestNonGenerics {
    
      String msg;
    
-     JsonTest(this.msg);
+     TestNonGenerics(this.msg);
    
      @override
      String toString() {
-       return 'JsonTest{msg: $msg}';
+       return 'TestNonGenerics{msg: $msg}';
      }
    }
    
    @JsonInflater()
-    class JsonTest2<K> with PartOfJsonTest2 {
-
-      String msg;
-      K data;
-
-      JsonTest2(this.msg, this.data);
-
-      @override
-      String toString() {
-        return 'JsonTest2{msg: $msg, data: $data}';
-      }
-    }
+   class TestGenerics1<K> with PartOfTestGenerics1 {
+   
+     String msg;
+     K data;
+   
+     TestGenerics1(this.msg, this.data);
+   
+     @override
+     String toString() {
+       return 'TestGenerics1{msg: $msg, data: $data}';
+     }
+   }
+   
+   @JsonInflater()
+   class TestGenerics2<K> with PartOfTestGenerics2 {
+   
+     String msg;
+     K data;
+   
+     TestGenerics2(this.msg, this.data);
+   
+   
+     @override
+     String toString() {
+       return 'TestGenerics2{msg: $msg, data: $data}';
+     }
+   }
    ```
 
    > `mixin`类是代码生成的，格式是：PartOf${className}。功能是提供`toJson()`、`parse()`方法。
@@ -229,12 +253,30 @@ main() {
      print(test.toJson()); // -> {msg: json test}
      ```
 
-   - `parse<T>()`。本框架提供的一个将Map转换成模型的方法。
+   - `parse<T>()`。本框架提供的一个将Map转换成模型的方法。提供5种不同泛型数量的方法：
+
+     - `parse<T>`
+     - `parse2<T1, T2>`
+     - `parse3<T1, T2, T3>`
+     - `parse4<T1, T2, T3, T4>`
+     - `parse5<T1, T2, T3, T4, T5>`
+
+     比较特殊的是，泛型需要按照如下规则：后一个泛型必须是前面泛型的泛型。如：
 
      ```dart
-     var test = JsonTest("json test");
-     var parseTest = parse<JsonTest>(test.toJson());
-     print("$parseTest"); // -> JsonTest{msg: json test}
+     T1 : List<Model<String>>
+     T2 : Model<String>
+     T3 : String
+     ```
+
+     用这样的方式解决泛型嵌套的问题。
+
+     例子：
+
+     ```dart
+     var genericsModel1 = TestGenerics1<TestNonGenerics>("generics model 1", nonGenericsModel);
+       var genericsModel1Parse = parse2<TestGenerics1<TestNonGenerics>, TestNonGenerics>(genericsModel1.toJson());
+       print("$genericsModel1Parse, ${genericsModel1Parse.runtimeType}"); // -> TestGenerics1{msg: generics model 1, data: TestNonGenerics{msg: non generics}}, TestGenerics1<TestNonGenerics>
      ```
 
    - `PartOf${className}<T>.parse()`。本框架提供的另外一个将Map转换成模型的方法。
@@ -244,38 +286,7 @@ main() {
      print("$parseTest4"); // -> JsonTest{msg: json test}
      ```
 
-   - `parse<T>()` 与 `PartOf${className}<T>.parse()`的差别：
-
-     - 前置支持泛型嵌套，后者不支持。
-
-     - `parse<T>()`虽然支持泛型嵌套，但最后返回的类型与实际泛型有差异：
-
-       ```dart
-       main() {
-       
-         var test = JsonTest("json test");
-       
-         var test2 = JsonTest2("json test 2", [test]);
-       
-         var parseTest2 = parse<JsonTest2<List<JsonTest>>>(test2.toJson());
-       
-         print("$parseTest2, ${parseTest2.runtimeType}");
-         // -> JsonTest2{msg: json test 2, data: [JsonTest{msg: json test}]}, JsonTest2<dynamic>
-           
-         //不支持嵌套泛型，否则报错。
-         var parseTest3 = PartOfJsonTest2.parse<List>(test2.toJson());
-          // -> JsonTest2{msg: json test 2, data: [{msg: json test}]}, JsonTest2<List<dynamic>>
-       
-         print("$parseTest3, ${parseTest3.runtimeType}");
-           
-           
-         print(parseTest2 is JsonTest2);  // -> true
-         print((parseTest2 as JsonTest2).data is List); // -> true
-         print(((parseTest2 as JsonTest2).data as List).first is JsonTest); // -> true
-       }
-       ```
-
-       虽然`parse<JsonTest2<List<JsonTest>>>()`的结果是`JsonTest2<dynamic>`， 与泛型不一致，但本质是按照泛型解析的，其`runtimeType`是一致的。
+   - `parse<T>()` 与 `PartOf${className}<T>.parse()`的差别：前者支持泛型嵌套，后者不支持。
 
 <br/>
 
