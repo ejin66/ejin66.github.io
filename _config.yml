@@ -108,7 +108,7 @@ collections:
 
 
 # BUILD SETTINGS
-markdown: kramdown
+markdown: CommonMarkGhPages
 highlighter: rouge
 sass:
   sass_dir: _sass
