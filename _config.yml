@@ -108,11 +108,7 @@ collections:
 
 
 # BUILD SETTINGS
-markdown: CommonMarkGhPages
-commonmark:
-  options: ["SMART", "FOOTNOTES"]
-  extensions: ["strikethrough", "autolink", "table", "tagfilter"]
-
+markdown: kramdown
 highlighter: rouge
 sass:
   sass_dir: _sass
