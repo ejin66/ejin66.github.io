@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [Android多语言的适配总结]
+title: Android多语言的适配总结
 tags: [Android]
 ---
 
