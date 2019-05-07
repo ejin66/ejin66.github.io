@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 将Go代码编译成动态链接库，android通过JNI调用
-tags: [Goland, Android, JNI]
+tags: [Golang, Android, JNI]
 ---
 
 
