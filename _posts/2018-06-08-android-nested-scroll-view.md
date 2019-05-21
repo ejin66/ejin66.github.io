@@ -16,7 +16,7 @@ tags: [Android,NestedScrollView]
 >
 >   dx: 用户在screen x轴上操作的位移长度
 >
->   dy: 用户在screeny轴上操作的位移长度
+>   dy: 用户在screeny轴上操作的位移长度（手指向下滑动，dy为负；手指向上滑动，dy为正）
 >
 >   scrollConsumed: parent已消费的距离{x1, y1}
 >
