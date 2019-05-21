@@ -92,7 +92,7 @@ docker exec containerId commnad
 docker compose
 
 ```bash
-# 根据本目录下的compose file运行
+# 根据本目录下的compose file运行。可同时起多个镜像，并设置彼此的依赖关系等。
 docker-compose up
 ```
 
