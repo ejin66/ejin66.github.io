@@ -83,7 +83,7 @@ tags: [Mysql]
 
 7. 取消授权
 
-   ```mysql
+   ```bash
    revoke $privileges on $db_name.$table_name from $username@$ip;
    ```
 
@@ -93,19 +93,19 @@ tags: [Mysql]
 
 1. 显示所有的数据库
 
-   ```mysql
+   ```bash
    show databases;
    ```
 
 2. 创建数据库
 
-   ```mysql
+   ```bash
    create database $db_name default charset utf8 collate utf8_genral_ci;
    ```
 
 3. 打开数据库
 
-   ```mysql
+   ```bash
    use $db_name;
    ```
 
@@ -115,13 +115,13 @@ tags: [Mysql]
 
 1. 显示数据表
 
-   ```mysql
+   ```bash
    show tables;
    ```
 
 2. 创建数据表
 
-   ```mysql
+   ```bash
    create table $table_name(
      $column_name $type null/not null [default $value] [auto_increment] [primary key],
      $column_name $type not null,
@@ -139,13 +139,13 @@ tags: [Mysql]
 
 3. 删除表
 
-   ```mysql
+   ```bash
    drop table $table_name;
    ```
 
 4. 清空表
 
-   ```mysql
+   ```bash
    # 支持事务，可以回滚
    delete from $table_name;
    # 即时生效，不支持事务，不能回滚
@@ -154,7 +154,7 @@ tags: [Mysql]
 
 5. 修改表
 
-   ```mysql
+   ```bash
    # 添加栏位
    alter table $table_name add $column_name $type;
    #删除栏位
@@ -171,7 +171,7 @@ tags: [Mysql]
 
 6. 新增数据
 
-   ```mysql
+   ```bash
    # 插入一条
    insert into $table_name($cloumn1,$column2,...) values($value1,$value2,...)
    # 插入多条
@@ -182,20 +182,20 @@ tags: [Mysql]
 
 7. 删除数据
 
-   ```mysql
+   ```bash
    delete from $table_name;
    delete from $table_name where ...;
    ```
 
 8. 更新数据
 
-   ```mysql
+   ```bash
    update $table_name set $column_name = $value where ...;
    ```
 
 9. 查询数据
 
-   ```mysql
+   ```bash
    select * from $table where ...;
    # 排序，限制
    select * from $table where ... order by $column_name aes/desc limit $start_line, $length;
@@ -204,13 +204,13 @@ tags: [Mysql]
 
 10. 分组查询
 
-    ```mysql
+    ```bash
     select $column1, $column2, $column3,... from $table where ... group by $column1,$column2;
     ```
 
 11. 多表查询
 
-    ```mysql
+    ```bash
     # left join, 以左表为主
     select * from A left join B on A.id = B.id where ...;
     # right join, 以右表为主
