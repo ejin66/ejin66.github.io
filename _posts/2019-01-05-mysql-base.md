@@ -8,19 +8,19 @@ tags: [Mysql]
 
 1. 数据库连接
 
-   ```mysql
+   ```bash
    mysql -h $host -u $username -p
    ```
 
 2. 设置用户密码
 
-   ```mysql
+   ```bash
    mysqladmin -u $username password $password
    ```
 
 3. 修改用户密码
 
-   ```mysql
+   ```bash
    mysqladmin -u $username -p password $new_password
    ```
 
@@ -30,7 +30,7 @@ tags: [Mysql]
 
 1. 创建用户
 
-   ```mysql
+   ```bash
    create user $username@$ip identified by $password;
    ```
 
@@ -42,31 +42,31 @@ tags: [Mysql]
 
 2. 删除用户
 
-   ```mysql
+   ```bash
    drop user $username@$ip;
    ```
 
 3. 修改用户
 
-   ```mysql
+   ```bash
    rename user $username@$ip to $new_username@$ip;
    ```
 
 4. 修改密码
 
-   ```mysql
+   ```bash
    set password for $username@$ip = Password($new_password)
    ```
 
 5. 查看用户权限
 
-   ```mysql
+   ```bash
    show grants for $username@$ip;
    ```
 
 6. 授权
 
-   ```mysql
+   ```bash
    grant $privileges on $db_name.$table_name to $username@$ip;
    ```
 
