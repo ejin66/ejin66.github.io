@@ -169,7 +169,13 @@ tags: [Mysql]
    alter table $table_name drop primary key;
    ```
 
-6. 新增数据
+6. 查看表结构
+
+   ```bash
+   desc $table_name;
+   ```
+
+7. 新增数据
 
    ```bash
    # 插入一条
@@ -180,20 +186,20 @@ tags: [Mysql]
    insert into $table_name values($value1,$value2,...)
    ```
 
-7. 删除数据
+8. 删除数据
 
    ```bash
    delete from $table_name;
    delete from $table_name where ...;
    ```
 
-8. 更新数据
+9. 更新数据
 
    ```bash
    update $table_name set $column_name = $value where ...;
    ```
 
-9. 查询数据
+10. 查询数据
 
    ```bash
    select * from $table where ...;
@@ -202,13 +208,13 @@ tags: [Mysql]
    select * from $table where ... limit $length [offset $start_line];
    ```
 
-10. 分组查询
+11. 分组查询
 
     ```bash
     select $column1, $column2, $column3,... from $table where ... group by $column1,$column2;
     ```
 
-11. 多表查询
+12. 多表查询
 
     ```bash
     # left join, 以左表为主
@@ -228,7 +234,7 @@ tags: [Mysql]
     select $column3, $column4 from B;
     ```
 
-12. 栏位类型
+13. 栏位类型
 
     - `bit[(m)]`. 二进制， 默认m = 1
 
