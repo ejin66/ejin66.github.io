@@ -201,12 +201,12 @@ tags: [Mysql]
 
 10. 查询数据
 
-   ```bash
-   select * from $table where ...;
-   # 排序，限制
-   select * from $table where ... order by $column_name aes/desc limit $start_line, $length;
-   select * from $table where ... limit $length [offset $start_line];
-   ```
+    ```bash
+    select * from $table where ...;
+    # 排序，限制
+    select * from $table where ... order by $column_name aes/desc limit $start_line, $length;
+    select * from $table where ... limit $length [offset $start_line];
+    ```
 
 11. 分组查询
 
