@@ -20,7 +20,8 @@ tags: [Flutter]
 
 > flutter build apk [--debug/release] [--split-per-abi]
 >
-> 默认是release
+> 默认是release。
+> 
 > split-per-abi表示生成对应abi的几种包。不加的话是一个fat apk（实际中这种apk会报错，报找不到flutter.so）。
 
 <br/>
