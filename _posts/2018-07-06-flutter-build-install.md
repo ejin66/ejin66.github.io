@@ -18,7 +18,7 @@ tags: [Flutter]
 
 ### 2. 打包生成APK
 
-> flutter build apk [--debug/release] [--split-per-abi]
+> flutter build apk [--debug/release] [--split-per-abi] [--target-platform=android-arm64]
 >
 > 默认是release。
 > 
