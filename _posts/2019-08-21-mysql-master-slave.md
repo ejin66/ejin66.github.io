@@ -91,7 +91,7 @@ Empty set(0.00 sec)
 
 这时，需要设置从数据库的`slave`信息：
 
-```mysql
+```bash
 change master to
 	master_host='master-host',
 	master_port='3306',
