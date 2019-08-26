@@ -89,11 +89,45 @@ docker exec -it containerId bash
 docker exec containerId commnad
 ```
 
+导出镜像
+
+```bash
+docker save [-o/> local_file] images
+
+#example
+docker save -o helloworld.tar helloworld:latest
+```
+
+加载镜像文件
+
+```bash
+docker load [-i/< local_file]
+
+#example
+docker load -i helloworld.tar
+```
+
+导出容器
+
+```bash
+docker export [-o local_fle] container
+
+#example
+docker export -o container_name.tar container_name
+```
+
+导入容器
+
+```bash
+docker import container_name.tar container_name
+```
+
 docker compose
 
 ```bash
 # 根据本目录下的compose file运行。可同时起多个镜像，并设置彼此的依赖关系等。
-docker-compose up
+docker-compose up -d
+docker-compose down
 ```
 
 查找镜像
@@ -117,4 +151,23 @@ docker push registry
 `Docker file`
 
 > 在`Dockerfile`中，`CMD`、`ENTRYPOINT`都只有一个，且`CMD`会被最后一个替换，这两个都是在容器运行时运行。RUN是在生成镜像时运行。
+
+本地仓库
+
+```bash
+#1 拉取仓库镜像
+docker pull registry
+#2 启动仓库镜像
+docker run -d -p 5000:5000 -v /backup_path:/var/lib/registry registry
+#3 将需要保存到本地的镜像，改名称以本地镜像地址起头
+docker tag origin_image 127.0.0.1:5000/local_registry_image
+#4 保存到本地
+docker push 127.0.0.1:5000/local_registry_image
+```
+
+第4步中push可能会失败，因为本地启动的registry服务不是安全可信赖的。需要去修改docker的配置文件：`/etc/default/docker`,添加`--insecure-registry`:
+
+```yaml
+DOCKER_OPTS="--registry-mirror=http://hub-mirror.c.163.com --insecure-registry 127.0.0.1:5000"
+```
 
