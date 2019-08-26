@@ -171,3 +171,19 @@ docker push 127.0.0.1:5000/local_registry_image
 DOCKER_OPTS="--registry-mirror=http://hub-mirror.c.163.com --insecure-registry 127.0.0.1:5000"
 ```
 
+宿主文件导入到容器
+
+```bash
+docker cp local_path containerId:[container_path]
+
+# example 将sql文件导入到容器，并允许
+docker cp ./test.sql mysql:/tmp/test.sql
+# 进入到容器，进入mysql后,执行sql文件
+source /tmp/test.sql
+```
+
+容器文件导出到宿主
+
+```bash
+docker cp containerId:[container_path] local_path
+```
