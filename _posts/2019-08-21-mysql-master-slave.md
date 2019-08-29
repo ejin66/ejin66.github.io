@@ -4,7 +4,7 @@ title: Mysql主从设置--库主从以及表主从
 tags: [Mysql]
 ---
 
-Mysql本身支持多个数据库之间的`Master-slave`架构，具体步骤：
+Mysql本身支持多个数据库之间的`Master-slave`架构，具体步骤是：
 
 #### 1. 配置`master`的`my.cnf`
 
