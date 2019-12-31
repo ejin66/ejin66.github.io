@@ -14,6 +14,14 @@ tags: [Docker]
 docker images
 #or
 docker image ls
+#or
+docker images -q #只显示镜像id
+# 按正则表达式过滤
+docker images | egrep -o "正则表达式"
+# 过滤出已xxx开始的镜像名
+docker images "xxx/*"
+# 过滤出<none>的镜像
+docker images --filter "dangling=true"
 ```
 
 #### 基于本地镜像创建一个新的镜像
