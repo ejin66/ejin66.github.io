@@ -177,7 +177,7 @@ void markNeedsPaint() {
 }
 ```
 
-如果`RenderObject`的`isRepaintBoundary == true`, 表示上访就到此为止了，不能再向上传递了，否则要出大事。接着，将该`RenderObject`加入到`owner._nodesNeedingPaint`队列，等待会重绘，并且调用`owner.requestVisualUpdate()`。
+如果`RenderObject`的`isRepaintBoundary == true`, 表示上访就到此为止了，不能再向上传递了，否则要出大事。接着，将该`RenderObject`加入到`owner._nodesNeedingPaint`队列，等待被重绘，并且调用`owner.requestVisualUpdate()`。
 
 如果`RenderObject`不是边界，表示还能继续上访，那就调用`parent.markNeedsPaint()`。
 
@@ -248,7 +248,7 @@ void ensureVisualUpdate() {
 }
 ```
 
-当我们调用`markNeedsPaint`之后，会调用到`ensureVisualUpdate`。而只有`schedulerPhase == SchedulerPhase.postFrameCallbacks`, 才会去安排下一帧的绘制。其他情况下都不做反应。
+当我们调用`markNeedsPaint`之后，会调用到`ensureVisualUpdate`。而只有`schedulerPhase == SchedulerPhase.postFrameCallbacks|idle`, 才会去安排下一帧的绘制。其他情况下都不做反应。
 
 还可以在追下去，`RendererBinding.initInstances()`什么时候被调用的呢？就是我们最熟悉的一个方法：`runApp`:
 
@@ -315,3 +315,163 @@ WidgetsFlutterBinding.ensureInitialized()
 ↑
 
 runApp()
+
+### markNeedsLayout()
+
+TODO
+
+### markParentNeedsLayout()
+
+TODO
+
+### markNeedsLayoutForSizedByParentChange()
+
+TODO
+
+# 绘制流程
+
+#### runApp时的绘制流程
+
+runApp -> RenderObjectToWidgetAdapter( root widget ) -> attachToRenderTree -> RenderObjectToWidgetElement( root element ) -> set root element owner -> root-element-owner.buildScope -> renderObjectToWidgetElement.mount -> container( root render object ) / parent  = null / slot = null / depth = 1 -> renderObjectToWidgetElement._rebuild
+
+↓
+
+updateChild
+
+↓
+
+widget.createElement
+
+↓
+
+renderObjectElement.mount
+
+↓
+
+parent / slot / owner = parent.owner / depth = parent.depth + 1 （render object element 形成一颗树）
+
+↓
+
+widget.createRenderObject
+
+↓
+
+renderObjectElement.attachRenderObject
+
+↓
+
+ancestorRenderObjectElement.insertChildRenderObject （render object 形成一颗树）
+
+↓
+
+回到上面的updateChild( RenderObjectElement的子类，在mount方法中会调用该方法 )
+
+...
+
+↓
+
+SchedulerBinding.instance.ensureVisualUpdate()
+
+#### 页面刷新流程
+
+SchedulerBinding.scheduleFrame()
+
+↓
+
+set window.onBeginFrame / window.onDrawFrame
+
+↓
+
+Window.scheduleFrame。 native方法，应该是注册同步信号监听。当有同步信号过来后，会调用上面的两个回调
+
+↓
+
+SchedulerBinding.handleDrawFrame()中，所有的`_persistentCallbacks`都会被回调。而在RendererBinding.initInstances中，就添加了一个回调监听：`_handlePersistentFrameCallback`
+
+↓
+
+RendererBinding._handlePersistentFrameCallback()
+
+↓
+
+WidgetsBinding.drawFrame(). 
+
+> 仔细看源码的话，会发现这里好像不对，应该调用RendererBinding.drawFrame()。但其实是WidgetsBinding.drawFrame()方法重写了RendererBinding.drawFrame()方法。WidgetsBinding.super.drawFrame()就是指RendererBinding.drawFrame()方法。
+
+↓
+
+buildOwner.buildScope(renderViewElement)。跟第一次的绘制流程调的一个方法。
+
+↓
+
+RendererBinding.drawFrame(). 包括layout/compositingBits/paint/将layer-tree合并送给GPU绘制等。
+
+
+
+#### 一帧的所有阶段
+
+- 动画阶段。
+
+  `Window.onBeginFrame`时会调用`handleBeginFrame`, 而`handleBeginFrame`会遍历瞬态帧注册回调队列`_transientCallbacks`。
+
+  ```dart
+  void handleBeginFrame(Duration rawTimeStamp) {
+      Timeline.startSync('Frame', arguments: timelineWhitelistArguments);
+      
+      ...
+  
+      assert(schedulerPhase == SchedulerPhase.idle);
+      _hasScheduledFrame = false;
+      try {
+        // TRANSIENT FRAME CALLBACKS
+        Timeline.startSync('Animate', arguments: timelineWhitelistArguments);
+        _schedulerPhase = SchedulerPhase.transientCallbacks;
+        final Map<int, _FrameCallbackEntry> callbacks = _transientCallbacks;
+        _transientCallbacks = <int, _FrameCallbackEntry>{};
+        callbacks.forEach((int id, _FrameCallbackEntry callbackEntry) {
+          if (!_removedIds.contains(id))
+            _invokeFrameCallback(callbackEntry.callback, _currentFrameTimeStamp, callbackEntry.debugStack);
+        });
+        _removedIds.clear();
+      } finally {
+        _schedulerPhase = SchedulerPhase.midFrameMicrotasks;
+      }
+    }
+  ```
+
+  我们在写动画时，都会`minix`一个`Ticker`, 来提供同步信号，应该就是这里的回调。`Ticker`中的部分源码：
+
+  ```dart
+  class Ticker {
+      ...
+      void scheduleTick({ bool rescheduling = false }) {
+          assert(!scheduled);
+          assert(shouldScheduleTick);
+          _animationId = SchedulerBinding.instance.scheduleFrameCallback(_tick, 				rescheduling: rescheduling);
+      }
+  }
+  ```
+
+  `Ticker`会帮助向`SchedulerBinding`中注册帧回调，在window.onBeginFrame时会告诉`Ticker`：时机到了，可以更新动画的值了。这时，`AnimationController`会计算出当前的值，并且通知`widget`更新。
+
+- 微任务阶段。等待在第一步中回调之后产生的新的微任务完成。
+
+- build阶段。
+
+- layout阶段。
+
+- 合成位阶段。
+
+- paint阶段。
+
+- 合成阶段。将layer-tree合并并送给GPU。
+
+- 语意阶段（供盲人使用的）。
+
+- The finalization phase in the widgets layer。部分Widget在绘制中被移除之后，调用state.dispose方法。
+
+- The finalization phase in the scheduler layer。`handleDrawFrame`中回调通过`addPostFrameCallback`注册的监听帧完成回调。
+
+  
+
+  
