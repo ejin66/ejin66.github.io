@@ -1,4 +1,10 @@
-# RenderObject
+---
+layout: post
+title: Flutter页面绘制梳理
+tags: [Flutter]
+---
+
+## RenderObject
 
 ### markNeedsCompositingBitsUpdate()
 
@@ -396,7 +402,17 @@ runApp()
 
 所以，通过`Positioned`将`left/right/top/bottom`信息设置到它的`child`上之后，`Stack`根据`child.parentData`的信息，计算出该`child`的`constraints`, 再调用`child.layout`进行布局。
 
-# 绘制流程
+
+
+## Widget
+
+### StatefulWidget
+
+TODO
+
+
+
+## 绘制流程
 
 #### runApp时的绘制流程
 
