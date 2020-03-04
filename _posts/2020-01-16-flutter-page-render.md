@@ -420,7 +420,7 @@ runApp -> RenderObjectToWidgetAdapter( root widget ) -> attachToRenderTree -> Re
 
 ↓
 
-updateChild
+updateChild -> canUpdate -> update ...> (StatulElement) ...> state.didUpdateWidget -> state.build
 
 ↓
 
