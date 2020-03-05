@@ -14,6 +14,7 @@ tags: [Flutter]
 - `Tween`
 - `AnimatedWidget`
 - `AnimatedBuilder`
+- `ImplicitlyAnimatedWidget`
 
 <br/>
 
@@ -277,6 +278,115 @@ void main() {
 ```
 
 <br/>
+
+### `ImplicitlyAnimatedWidget`
+
+`ImplicitlyAnimatedWidget`替我们封装好了大部分功能。我们只需要一点额外代码，就能实现动画。
+
+构造方法源码：
+
+```dart
+abstract class ImplicitlyAnimatedWidget extends StatefulWidget {
+
+  const ImplicitlyAnimatedWidget({
+    Key key,
+    this.curve = Curves.linear,
+    @required this.duration,
+    this.onEnd,
+  }) : assert(curve != null),
+       assert(duration != null),
+       super(key: key);
+}
+```
+
+`Curves`是设置`CurvedAnimation`用的，`duration`是设置`AnimationController`用的。而这些，都不需要我们自己创建，`ImplicitlyAnimatedWidget`会帮我们做。
+
+然后，在`ImplicitlyAnimatedWidgetState`中，有个方法需要介绍下，挺绕的：
+
+```dart
+typedef TweenVisitor<T> = Tween<T> Function(Tween<T> tween, T targetValue, TweenConstructor<T> constructor);
+
+abstract class ImplicitlyAnimatedWidgetState<T extends ImplicitlyAnimatedWidget> extends State<T> with SingleTickerProviderStateMixin<T> {
+    
+    void forEachTween(TweenVisitor<dynamic> visitor);
+    
+}
+```
+
+`forEachTween`方法，主要功能，就能它的名字一样，遍历所有的`Tween`。但是`ImplicitlyAnimatedWidgetState`本身并不提供`Tween`，需要我们在继承时设置实际的`Tween`，并且支持多个`Tween`。
+
+遍历`Tween`做什么逻辑呢？就是入参`vistor`, 它是一个方法体，每个`Tween`都经过它的逻辑洗礼一遍才行。
+
+在`ImplicitlyAnimatedWidgetState`中，主要通过`forEachTween`完成两件事：
+
+- 初始化`Tween`
+- 更新`Tween`
+
+部分源码：
+
+```dart
+@override
+void didUpdateWidget(T oldWidget) {
+    ///...
+    if (_constructTweens()) {
+        ///这里传入的是更新的逻辑
+        forEachTween((Tween<dynamic> tween, dynamic targetValue, TweenConstructor<dynamic> constructor) {
+            _updateTween(tween, targetValue);
+            return tween;
+        });
+        ///...
+    }
+}
+
+bool _constructTweens() {
+    bool shouldStartAnimation = false;
+    ///这里传入的是初始化逻辑
+    forEachTween((Tween<dynamic> tween, dynamic targetValue, TweenConstructor<dynamic> constructor) {
+        if (targetValue != null) {
+            tween ??= constructor(targetValue);
+            if (_shouldAnimateTween(tween, targetValue))
+                shouldStartAnimation = true;
+        } else {
+            tween = null;
+        }
+        return tween;
+    });
+    return shouldStartAnimation;
+}
+```
+
+#### 例子
+
+```dart
+class CircleProgressChart extends ImplicitlyAnimatedWidget {
+    
+  double progress;
+
+  CircleProgressChart(this.size, Duration duration) : super(duration: duration);
+
+  @override
+  _CircleProgressState createState() => _CircleProgressState();
+}
+
+class _CircleProgressState
+    extends AnimatedWidgetBaseState<CircleProgressChart> {
+    
+  Tween<double> _progressTween;
+
+  @override
+  Widget build(BuildContext context) {
+    ///根据当前的值：_progressTween.evaluate(animation)
+  }
+
+  @override
+  void forEachTween(visitor) {
+    _progressTween = visitor(
+        _progressTween, widget.progress, (v) => Tween<double>(begin: v));
+  }
+}
+```
+
+这代码量，确实是轻松不少！
 
 
 
