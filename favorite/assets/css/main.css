@@ -29,18 +29,45 @@ select {
 
 }
 
+.right1 {
+    right: 1rem
+}
+
 .right2 {
     right: 2rem
 }
 
-.right5 {
-    right: 5rem
+.right3 {
+    right: 3rem
 }
 
 .right4 {
     right: 4rem
 }
 
+.right5 {
+    right: 5rem
+}
+
+.right6 {
+    right: 6rem
+}
+
+.right7 {
+    right: 7rem
+}
+
+.right8 {
+    right: 8rem
+}
+
+.right9 {
+    right: 9rem
+}
+
+.right10 {
+    right: 10rem
+}
 .textInput {
     padding: 8px;
     border: 1px solid grey;
