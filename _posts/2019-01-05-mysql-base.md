@@ -268,3 +268,87 @@ tags: [Mysql]
 
     - `TIMESTAMP`.  它会把客户端插入的时间从当前时区转化为UTC进行存储；查询时，将其又转化为客户端当前时区时间。
 
+### 执行顺序
+
+`mysql`语句最多可以分为11步， 最先执行的是`From`, 最后执行的是`Limit`。每执行一步，都会生成一张虚拟表，并会作为下一步的数据源。
+
+`sql`模板：
+
+```mysql
+(8)
+SELECT XXX (9) DISTINCT(XXX) 
+(1)
+FROM table1
+(3)
+[INNER/LEFT/RIGHT] JOIN table2
+(2)
+	ON xxx
+(4)
+WHERE xxx
+(5)
+GROUP BY xxx
+(6)
+WITH {CUBE|ROLLUP}
+(7)
+HAVING xxx
+(10)
+ORDER BY xxx
+(11)
+LIMIT xxx
+```
+
+按照顺序，具体分析每一阶段：
+
+- **FROM**. VT1
+
+- **ON**. VT2 
+
+- **JOIN**.VT3
+
+- **WHERE**. 根据条件，过滤VT3的数据，生成VT4
+
+- **GROUP BY**. 对VT4进行分组，生成VT5
+
+- **WITH**. 根据`GROUP BY`的分组，生成VT6
+
+  `WITH`是与`GROUP BY`一起使用的，主要作用是同时对多个字段的不同组合，进行分组。支持两种：
+
+  - `CUBE`
+
+    针对N列的`GROUP BY`， `CUBE`需要进行2的N次方分组操作。
+
+    如 `GROUP BY c1, c2, c3 WITH CUBE`，会生成以下分组数据：
+
+    - c1
+    - c2
+    - c3
+
+    - c1, c2
+    - c1, c3
+    - c2, c3
+    - c1, c2, c3
+    - (). 不分组， 表示对整张表聚合
+
+  - `ROLLUP`
+
+    针对N列的`GROUP BY`， `CUBE`需要进行N次方分组操作。
+
+    如 `GROUP BY c1, c2, c3 WITH CUBE`，会生成以下分组数据：
+
+    - c1
+
+    - c1, c2
+    - c1, c2, c3
+    - (). 不分组， 表示对整张表聚合
+
+- **HAVING**. 对VT6的数据， 进行过滤，生成VT7。
+
+  与`WHERE`不同的是：1. 执行顺序 2. `HAVING`支持聚合函数，`WHERE`不支持。
+
+- **SELECT**. 选择指定的列，生成VT8
+
+- **DISTINCT**.去重后，VT9
+
+- **ORDER BY**. 按照指定列进行排序，生成VT10
+
+- **LIMIT**.取出指定行记录，生成VT11，并返回。
