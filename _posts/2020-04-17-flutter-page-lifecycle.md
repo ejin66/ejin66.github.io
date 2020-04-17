@@ -22,11 +22,11 @@ tags: ["Flutter"]
 
 **state.didUpdateWidget何时被调用**
 
-在调用了`setState`或者其他的情况，导致页面刷新时，某个子节点`State`的直接父节点会调用`updateChild`方法，判断该`State`是否能被复用。如可以，会调用`State.update`方法，该方法会调用`state.didUpdateWidget`.
+在调用了`setState`或者其他的情况，导致页面刷新时，某个子节点`element`的直接父节点会调用`updateChild`方法，判断该`element`是否能被复用。如可以，会调用`element.update`方法，该方法会调用`state.didUpdateWidget`.
 
 **state.didChangeDependencies何时被调用**
 
-1. 一个新页面会push出来时，会调用到该方法
+1. 一个新页面在push出来时，会调用到该方法
 
 2. 当屏幕方向改变或者语言发生变化时，会调用该方法。(针对这种情况，下面有详细说明。)
 
