@@ -165,7 +165,7 @@ I/flutter (20505): Page StatefulWidget 2 didChangeDependencies
 I/flutter (20505): Page StatefulWidget 2 build
 ```
 
-一般情况下，widget树的父节点有`InheritedWidget`子类`WidgetType1`。当子widget有通过`context.dependOnInheritedWidgetOfExactType(WidgetType1)`获取到父节点`WidgetType1`, 并根据`WidgetType1`中的值进行显示等。此时，child便已经注册监听了`WidgetType1`。当`WidgetType1`改变且`WidgetType2.updateShouldNotify == true`时，会通知这个child, 触发`childState.didChangeDependencies`方法，最后触发`childState.build`。
+一般情况下，widget树的父节点有`InheritedWidget`子类`WidgetType1`。当子widget有通过`context.dependOnInheritedWidgetOfExactType(WidgetType1)`获取到父节点`WidgetType1`, 并根据`WidgetType1`中的值进行显示等。此时，child便已经注册监听了`WidgetType1`。当`WidgetType1`改变且`WidgetType1.updateShouldNotify == true`时，会通知这个child, 触发`childState.didChangeDependencies`方法，最后触发`childState.build`。
 
 #### TabBar 控件
 
