@@ -31,28 +31,22 @@ tags: [Flutter, GitLab]
 
      这里还有个插曲，刚开始用命令`sdkmanager`时报错，后发现是本地的JAVA版本太高，可以在当前命令行中设置临时的`JAVA_HOME`环境变量，路径指向Android Studio中配置的JAVA 环境就可以了。
    
-5. 环境设置好后，通过命令`flutter build apk`的时候，会卡在`gradlew assembleRelease`下。直接进到项目的`./android`目录下，直接运行`gradlew assembleRelease --debug`打包，发现它一直尝试从`dl.google.com`谷歌仓库拉库，这导致打包命令超时最后失败。有下面几个办法：
+5. 环境设置好后，通过命令`flutter build apk`的时候，会卡在`gradlew assembleRelease`下。直接进到项目的`./android`目录下，直接运行`gradlew assembleRelease --debug`打包，发现它一直尝试从`dl.google.com`谷歌仓库拉库，这导致打包命令超时最后失败。Flutter项目中，使用了很多第三方库，而其中的很多库都有各自的`build.gradle`，不建议直接改第三方库中的代码以及库很多的时候改起来也很困难。可以在根目录下的build.gradle中添加如下代码：
 
-   - 将`build.gradle`中`repositories`下面的`google()`、`jcenter()`仓库换成其他的镜像仓库：
-   
-     ```bash
-     repositories {
-     	maven {
-     		url "https://maven.aliyun.com/repository/google"
-     	}
-     	maven {
-     		url "https://maven.aliyun.com/repository/public"
-     	}
+   ```bash
+     allprojects { project ->
+          project.getBuildscript().repositories {
+              google { url "https://maven.aliyun.com/repository/google"}
+              jcenter { url "https://maven.aliyun.com/repository/jcenter"}
+          }
+          repositories {
+              google { url "https://maven.aliyun.com/repository/google"}
+              jcenter { url "https://maven.aliyun.com/repository/jcenter"}
+          }
      }
      ```
    
-     这在原生Android项目上是可行的，因为项目中只有一个根`build.gralde`中配置了仓库信息，直接改它就可以。但是Flutter项目中，使用了很多第三方库，而其中的很多库都有各自的`build.gradle`，不建议直接改第三方库中的代码以及库很多的时候改起来也很困难。在Gradle-wrapper源码中遨游了一番后发现是可以修改GOOGLE_URL的值的，在打包时通过下面的命令：
-   
-     ```bash
-     gradlew assembleRelease -Dorg.gradle.integtest.mirrors.google="https://maven.aliyun.com/repository/google" -Dorg.gradle.integtest.mirrors.jcenter="https://maven.aliyun.com/repository/public"
-     ```
-   
-     > 上面这个设置有问题，待排查
+     将所有的Project以及Project.ScriptHandler中的repositories都添加了这两个代理的仓库，这样的话就解决了网络不通的问题。
      
      还有一点，由于第三方库很多，每个库中的`compileSdkVersion`都不一样，可以通过在根`build.gradle`中加入脚本：
    
