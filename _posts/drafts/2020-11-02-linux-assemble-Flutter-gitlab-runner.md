@@ -47,6 +47,8 @@ tags: [Flutter, GitLab]
      ```
    
      将所有的Project以及Project.ScriptHandler中的repositories都添加了这两个代理的仓库，这样的话就解决了网络不通的问题。
+      
+     > flutter库中自带的flutter.gradle: `flutter\packages\flutter_tools\gradle\flutter.gradle`, 其中的buildscript repositories也需要修改。
      
      还有一点，由于第三方库很多，每个库中的`compileSdkVersion`都不一样，可以通过在根`build.gradle`中加入脚本：
    
