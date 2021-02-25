@@ -8,7 +8,7 @@ tags: ["Flutter"]
 
 首先，将这三个参数的官方解释贴出来：
 
-1. viewInsets
+**viewInsets**
 
 ```dart
 类：MediaQueryData
@@ -57,7 +57,7 @@ WindowPadding get viewInsets => _viewInsets;
 WindowPadding _viewInsets = WindowPadding.zero;
 ```
 
-2. viewPadding
+**viewPadding**
 
 ```dart
 类：MediaQueryData
@@ -114,7 +114,7 @@ WindowPadding get viewPadding => _viewPadding;
 WindowPadding _viewPadding = WindowPadding.zero;
 ```
 
-3. padding
+**padding**
 
 ```dart
 类：MediaQueryData
@@ -213,9 +213,8 @@ WindowPadding _padding = WindowPadding.zero;
    }
    ```
    
-它这是要告诉它的child: 底部有系统控件，我没有处理啊，你在布局的时候要空出padding.bottom的高度来呀。
-   
-但是，我们在设置`bottomNavigationBar`时，不理会不处理它，直接设置`Text("123")`时，没有理会这个padding.bottom, 最后导致它与系统功能键重叠。
+   它这是要告诉它的child: 底部有系统控件，我没有处理啊，你在布局的时候要空出padding.bottom的高度来呀。
+   但是，我们在设置`bottomNavigationBar`时，没有理会这个padding.bottom，直接设置`Text("123")`时，最后导致它与系统功能键重叠。
    
    如果我们加上`SafeArea(child: Text("123"))`, 此时`SafeArea`替它处理掉了padding, 这样就不会与系统UI重叠了。
    
