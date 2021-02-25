@@ -10,20 +10,20 @@ tags: ["Flutter"]
 
 ###  1. 页面UI刷新控制
 
-<img src="https://ejin66.github.io/assets/img/pexels/loaded.gif" width = "300px" /> 
+<img src="https://ejin66.github.io/assets/img/pexels/loaded.gif" width = "400px" /> 
 
 ### 2. 页面的数据加载逻辑封装
 
 *数据的加载、刷新、分页、加载空数据*
 
-<img src="https://ejin66.github.io/assets/img/pexels/loading.gif" width = "200" />  <img src="https://ejin66.github.io/assets/img/pexels/no_data.gif" width = "200" /> 
+<img src="https://ejin66.github.io/assets/img/pexels/loading.gif" width = "400px" />  <img src="https://ejin66.github.io/assets/img/pexels/no_data.gif" width = "400px" /> 
 
 
 ### 3. 页面间数据共享
 
 3.1. *获取其他页面数据*
 <br />
-<img src="https://ejin66.github.io/assets/img/pexels/next_page.gif" width = "200" />
+<img src="https://ejin66.github.io/assets/img/pexels/next_page.gif" width = "400px" />
 
 
 
