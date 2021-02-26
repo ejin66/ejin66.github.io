@@ -6,7 +6,7 @@ tags: ["Flutter"]
 
 `app_responsive` 是基于google `provider`的响应式框架，本框架主要目的是更简化更方便的处理UI与controller(逻辑)之间的关系。
 
-## 为什么要造轮子
+### 为什么要造轮子
 
 我们先来看看`provider`有哪些问题或者有哪些不方便的地方：
 
@@ -18,9 +18,9 @@ tags: ["Flutter"]
 
 > 本框架不仅是响应式UI框架，针对逻辑层也做了相应的封装。一个完整的页面通常由`IPage、Istate、IController`三个角色组合完成。
 
-## 阐述
+### 阐述
 
-###  1. 页面UI刷新控制
+####  1. 页面UI刷新控制
 
 看下面的动图，使用我们的框架是怎样实现的
 
@@ -79,7 +79,7 @@ class ExampleState extends IState<ExamplePage, ExampleController> {
 
 
 
-### 2. 页面的数据加载逻辑封装
+#### 2. 页面的数据加载逻辑封装
 
 *数据的加载、刷新、分页、加载空数据*
 
@@ -157,7 +157,7 @@ class ExampleState extends IState {
 
 > load方法的入参refresh、loadMore， 可以控制页面是否支持刷新、分页功能。
 
-### 3. 页面间数据共享
+#### 3. 页面间数据共享
 
 要实现页面间的数据共享，需要在`MaterialApp`外包裹`AppProvider`，无其他要求。如这样：
 
@@ -233,6 +233,6 @@ class ... extends IController {
 
 通过`AppProvider.watch<ExampleController, PPage>`, 监听其他页面的`ExampleController`中`PPage`的变化。一旦被监听页面中的`PPage`有通知，当前页也会相应的刷新。
 
-## 仓库
+### 仓库
 
 项目的仓库地址：[app_responsive](https://github.com/ejin66/app_responsive)
