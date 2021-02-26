@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Flutter 响应式框架app responsive
+subtitle: `app_responsive` 是基于google `provider`的响应式框架，本框架主要目的是更简化更方便的处理UI与controller(逻辑)之间的关系。
 tags: ["Flutter"]
 ---
 
