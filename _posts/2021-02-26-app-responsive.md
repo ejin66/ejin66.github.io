@@ -4,9 +4,9 @@ title: Flutter 响应式框架app responsive
 tags: ["Flutter"]
 ---
 
-## 简介
-
 `app_responsive` 是基于google `provider`的响应式框架，本框架主要目的是更简化更方便的处理UI与controller(逻辑)之间的关系。
+
+## 为什么要造轮子
 
 我们先来看看`provider`有哪些问题或者有哪些不方便的地方：
 
