@@ -176,15 +176,15 @@ Widget build(BuidContext context) {
 
 3.1 *共享当前数据*
 
-共享页面数据，一般共享时的`icontroller`中的数据，在`IController`中：
+共享页面数据，一般共享的是 `icontroller`实例，在`IController`中：
 
 ```dart
 class ExampleController extends IController {
     
   @override
   mount(BuildContext context) {
-  	super.mount(context);
-	get<PPage>().exposeToApp(buildContext);
+    super.mount(context);
+    get<PPage>().exposeToApp(buildContext);
     /// 或者
     AppProvider.expose(context, this);
   }
@@ -206,9 +206,9 @@ class ExampleController extends IController {
 
 ```dart
 Widget buildBody(BuildContext context) {
-  	return Center(
-        child: "来自第一页的数据： ${Text(AppProvider.get<ExampleController>(context).text)}",
-    );
+  return Center(
+    child: "来自第一页的数据： ${Text(AppProvider.get<ExampleController>(context).text)}",
+  );
 }
 ```
 
@@ -216,22 +216,22 @@ Widget buildBody(BuildContext context) {
 
 3.3. *监听其他页面的数据变化*
 
-上面只是展示了如何获取其他页面的数据，当然，也可以监听它数据的变化，通过：
+上面展示了如何获取其他页面的数据，当然，也可以监听它数据的变化，通过：
 
 ```dart
 class ... extends IController {
     
   @override
   mount(BuildContext context) {
-  	super.mount(context);
-	AppProvider.watch<ExampleController, PPage>(this);
+    super.mount(context);
+    AppProvider.watch<ExampleController, PPage>(this);
   }
     
   ...
 }
 ```
 
-通过`AppProvider.watch<ExampleController, PPage>`, 监听`ExampleController`中`PPage`的变化。一旦被监听页面中的`PPage`有通知，当前页也会相应的刷新。
+通过`AppProvider.watch<ExampleController, PPage>`, 监听其他页面的`ExampleController`中`PPage`的变化。一旦被监听页面中的`PPage`有通知，当前页也会相应的刷新。
 
 ## 仓库
 
