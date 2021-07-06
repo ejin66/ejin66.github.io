@@ -1,10 +1,10 @@
 ---
 layout: post
-title: CentOS中防火墙 [iptables, firewall] 的基本用法
+title: Linux中防火墙 [iptables, firewall, ufw] 的基本用法
 tags: [Linux, CentOS, Firewall]
 ---
 
-#### 前言
+### CentOS
 
 在 `CentOS` 中有两类防火墙： `iptabls` , `firewall`。 `CentOS 7` 以前的版本默认是 `iptabls`， 之后的版本默认都是 `firewall`。下面会分别介绍下两种防火墙的基本用法。
 
@@ -164,3 +164,48 @@ firewall-cmd --reload
    ```bash
    firewall-cmd --zone=public --remove-port=80/tcp --permanent
    ```
+<br>
+
+### Ubuntu
+Ubuntu中常用的防火墙工具是ufw.
+##### ufw的基本用法
+
+1. 安装
+```bash
+yum install ufw
+```
+
+2. 开启防火墙, 并随系统自启动
+```bash
+ufw enable
+```
+
+3. 关闭防火墙
+```bash
+ufw disable
+```
+
+4. 查看防火墙状态
+```bash
+ufw status
+```
+
+5. 设置端口
+```bash
+ufw allow 80 # 允许外部访问80端口
+ufw deny 80 # 禁止外部访问80 端口
+ufw delete deny 80 # 删除上面的规则 
+ufw allow from 192.168.1.1 # 允许此IP访问所有的本机端口
+ufw deny smtp # 禁止外部访问smtp服务
+ufw delete allow smtp # 删除上面建立的某条规则
+# 要拒绝所有的TCP流量从10.0.0.0/8 到192.168.0.1地址的22端口
+ufw deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 22 
+
+# 可以允许网络段访问这个主机
+ufw allow from 10.0.0.0/8
+ufw allow from 172.16.0.0/12
+ufw allow from 192.168.0.0/16
+
+# 禁止所有的外部访问
+ufw default deny
+```
