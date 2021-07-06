@@ -9,6 +9,10 @@ tags: [Docker]
 `Dockerfile`是用来生成`Docker`镜像的，它描述生成一个镜像所要的所有步骤，包括该镜像依赖的其他镜像、编译时需要运行的命令等。
 
 然后，命令`docker build`会根据当前目录下的`Dockerfile`编译生成一个本地镜像。
+```bash
+# 默认查找指定path下的Dockerfile
+docker build -t tagname .
+```
 
 <br/>
 
