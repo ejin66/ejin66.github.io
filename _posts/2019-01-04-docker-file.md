@@ -49,7 +49,7 @@ docker run -d -p 80:80 -v /local-path:/container-path --restart=always --name co
 
 #### `FROM`
 
-要生成的镜像需要依赖的其他镜像。如`FROM centos`, 指我的镜像需要基于`centos`系统，在`docker run`时会自动去[`Docker`官方镜像仓库](hub.docker.com)去拉取所需要的镜像。
+要生成的镜像需要依赖的其他镜像。如`FROM centos`, 指我的镜像需要基于`centos`系统，在`docker run`时会自动去[`Docker`官方镜像仓库](https://hub.docker.com)去拉取所需要的镜像。
 
 格式：
 
@@ -85,7 +85,7 @@ USER <UID>[:<GID>]
 指出容器对外暴露的端口、协议。然后，在`docker run`时通过`-p`指定外部端口与容器端口的映射关系，如将外部的8081端口映射到容器的80端口：
 
 ```bash
-docker run -p 8081:80 image_name 
+docker run -p 8081:80 image_name
 ```
 
 若`docker run -P`这种写法的话，无需特殊指定映射关系，会自动将`Dockerfile`中`EXPOSE`的所有端口映射到主机的随机高阶端口，可通过`docker port image_name`查看。

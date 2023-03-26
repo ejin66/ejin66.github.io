@@ -8,13 +8,13 @@ tags: [Android, Hotfix]
 
 #### 1. 申请账号
 
-获取到以下值：             
+获取到以下值：
 
 ```
-App Key             
-App Secret            
-RSA             
-APP ID ( 初始化HotFixManager时用到 ) 
+App Key
+App Secret
+RSA
+APP ID ( 初始化HotFixManager时用到 )
 ```
 
 #### 2. 添加依赖仓库
@@ -51,7 +51,7 @@ APP ID ( 初始化HotFixManager时用到 )
 -keep class com.ta.utdid2.device.**{*;}
 -keep class com.taobao.hotfix.HotFixManager{
 	public *;
-} 
+}
 ```
 
 #### 5. SDK接口使用
@@ -97,7 +97,7 @@ java -jar BCFixPatchTools-1.3.0.jar -c patch -s old.apk -f new.apk -w patch-out 
 
 安装阿里提供的调试工具：hotfix_debug_tool.apk。如下： 
 
-![上传补丁]({{site.baseurl}}/assets/img/pexels/alibaichuan_2.png)
+![上传补丁]({{site.baseurl}}/assets/img/pexels/alibaichuan_2.jpg)
 
 ```text
 ·  mode: 补丁模式, 0:正常请求模式 1:扫码模式 2:本地补丁模式
@@ -108,7 +108,7 @@ java -jar BCFixPatchTools-1.3.0.jar -c patch -s old.apk -f new.apk -w patch-out 
 
 #### 8. 注意点
 
-​	1. 检查当前项目结构jniLibs中是否有armeabi-v7a, arm64-v8a目录。有的话，需要添加so库。（不同cpu架构不一样）     
+​	1. 检查当前项目结构jniLibs中是否有armeabi-v7a, arm64-v8a目录。有的话，需要添加so库。（不同cpu架构不一样）
 
 ​    	2. patch是针对客户端具体某个版本的，patch和具体版本绑定
 

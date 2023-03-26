@@ -8,7 +8,7 @@ tags: [Flutter, GitLab]
 
 本该没啥好说的，安装完环境，通过命令`Flutter build apk`的命令就可以了。但是由于墙的原因，导致在服务器上安装Flutter环境变得困难。
 
-1. 安装Flutter环境。按照[官网]([https://flutter.dev](https://flutter.dev/))(或[中文镜像网站](https://flutter.cn/docs/get-started/install/linux))的安装指南，一步步下来就可以了。
+1. 安装Flutter环境。按照[官网](https://flutter.dev/)(或[中文镜像网站](https://flutter.cn/docs/get-started/install/linux))的安装指南，一步步下来就可以了。
 
 2. 设置Flutter环境变量。由于中国网络的原因，无法直接从Pub仓库下载。需要设置镜像：
 
@@ -30,7 +30,7 @@ tags: [Flutter, GitLab]
      ```
 
      这里还有个插曲，刚开始用命令`sdkmanager`时报错，后发现是本地的JAVA版本太高，可以在当前命令行中设置临时的`JAVA_HOME`环境变量，路径指向Android Studio中配置的JAVA 环境就可以了。
-   
+
 5. 环境设置好后，通过命令`flutter build apk`的时候，会卡在`gradlew assembleRelease`下。直接进到项目的`./android`目录下，直接运行`gradlew assembleRelease --debug`打包，发现它一直尝试从`dl.google.com`谷歌仓库拉库，这导致打包命令超时最后失败。Flutter项目中，使用了很多第三方库，而其中的很多库都有各自的`build.gradle`，不建议直接改第三方库中的代码以及库很多的时候改起来也很困难。可以在根目录下的build.gradle中添加如下代码：
 
    ```bash
@@ -45,13 +45,13 @@ tags: [Flutter, GitLab]
           }
      }
      ```
-   
+
      将所有的Project以及Project.ScriptHandler中的repositories都添加了这两个代理的仓库，这样的话就解决了网络不通的问题。
-      
+
      > flutter库中自带的flutter.gradle: `flutter\packages\flutter_tools\gradle\flutter.gradle`, 其中的buildscript repositories也需要修改。
-     
+
      还有一点，由于第三方库很多，每个库中的`compileSdkVersion`都不一样，可以通过在根`build.gradle`中加入脚本：
-   
+
      ```groovy
      subprojects {
          afterEvaluate {project ->
@@ -71,11 +71,11 @@ tags: [Flutter, GitLab]
 ```yaml
 before_script:
   - echo "before project"
-    
+
 main-run-script:
   script:
     - uname -a
-    
+
 after_script:
   - echo "after project"
 
