@@ -20,7 +20,7 @@ timezone:
 
 title: Ejin66 # the main title
 
-tagline: 123456 # it will display as the sub-title
+tagline: Programing well, go home early # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
   Ejin66 blog
@@ -29,7 +29,7 @@ description: >- # used by seo meta and the atom feed
 url: "https://ejin66.github.io"
 
 github:
-  username: github_username # change to your github username
+  username: ejin66 # change to your github username
 
 social:
   # Change to your full name.
@@ -76,7 +76,7 @@ theme_mode: # [light|dark]
 img_cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar:
+avatar: assets/img/macat.jpg
 
 # boolean type, the global switch for TOC in posts.
 toc: true

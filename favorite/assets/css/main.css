@@ -1,0 +1,402 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: white;
+}
+
+a {
+    text-decoration: none;
+}
+
+select {
+    text-align: center;
+
+    /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+    border: solid 1px #bbb;
+
+    /*很关键：将默认的select选择框样式清除*/
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+
+    /*在选择框的最右侧中间显示小箭头图片*/
+    background: url("../img/arrow.png") no-repeat scroll right center white;
+
+    /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+    padding: 6px 20px 6px 6px;
+
+    border-radius: 3px;
+
+}
+
+.right1 {
+    right: 1rem
+}
+
+.right2 {
+    right: 2rem
+}
+
+.right3 {
+    right: 3rem
+}
+
+.right4 {
+    right: 4rem
+}
+
+.right5 {
+    right: 5rem
+}
+
+.right6 {
+    right: 6rem
+}
+
+.right7 {
+    right: 7rem
+}
+
+.right8 {
+    right: 8rem
+}
+
+.right9 {
+    right: 9rem
+}
+
+.right10 {
+    right: 10rem
+}
+.textInput {
+    padding: 8px;
+    border: 1px solid grey;
+    border-radius: 3px;
+    width: 50%;
+}
+
+.textInput:focus {
+    border: 1px solid cornflowerblue;
+}
+
+.button {
+    height:2rem;
+    text-align: center;
+    border: 1px solid olivedrab;
+    border-radius: 3px;
+    color: olivedrab;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: olivedrab;
+    color: white;
+}
+
+.warning {
+    border-color: red;
+    color:red;
+}
+
+.warning:hover {
+    background-color: red;
+}
+
+.info {
+    border-color: darkgreen;
+    color:darkgreen;
+}
+
+.info:hover {
+    background-color: darkgreen;
+}
+
+.short {
+    width: 5rem !important;
+}
+
+.thumbnail {
+    width:5rem;
+    height:5rem;
+    margin: 0 1rem;
+    border-radius: 10px;
+    border:3px solid white;
+    cursor: pointer;
+}
+
+.thumbnail:hover {
+    width: 5.5rem;
+    height: 5.5rem;
+}
+
+.header {
+    height: 4rem;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    position:fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+	z-index:1;
+}
+
+/* 垂直居中方法一：定高，absolute,top/bottom 0,margin auto */
+.header .avatar {
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top:0;
+    bottom:0;
+    /*right: 0;*/
+    margin: auto 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/*垂直方法二： absolute,top:50%,相对自身margin-top -50%*/
+.header .title {
+    position: absolute;
+    top: 50%;
+    left:2rem;
+    transform: translate(0,-50%);
+    font-size: 20px;
+}
+
+.header .title a{
+    color: red;
+}
+
+.header .title a:hover{
+    color:orangered;
+}
+
+.navigation {
+    background-color: #bbbbbb;
+    position: relative;
+    height: 4rem;
+    left: 0;  top:0;
+    width: 100%;
+    z-index: 2;
+}
+
+.navigation .label {
+    background-color: orangered;
+    color: white;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 2rem;
+}
+
+.navigation .label:hover {
+    background-color: #FF0808;
+}
+
+.navigation .active{
+    background-color: #FF0808;
+}
+
+.center {
+    display: inline-block;
+    position: relative;
+    left: 50%; 
+    top: 50%;
+    transform: translate(-50%,-50%);
+	-ms-transform:translate(-50%,-50%); 	/* IE 9 */
+	-moz-transform:translate(-50%,-50%); 	/* Firefox */
+	-webkit-transform:translate(-50%,-50%); /* Safari 和 Chrome */
+	-o-transform:translate(-50%,-50%); 	/* Opera */
+}
+
+
+
+.centerVertical {
+    display: inline-block;
+    position: relative;  top: 50%;
+    transform: translateY(-50%);
+	-ms-transform:translateY(-50%); 	/* IE 9 */
+	-moz-transform:translateY(-50%); 	/* Firefox */
+	-webkit-transform:translateY(-50%); /* Safari 和 Chrome */
+	-o-transform:translateY(-50%); 	/* Opera */
+}
+
+.centerHorizontal {
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+	-ms-transform:translateX(-50%); 	/* IE 9 */
+	-moz-transform:translateX(-50%); 	/* Firefox */
+	-webkit-transform:translateX(-50%); /* Safari 和 Chrome */
+	-o-transform:translateX(-50%); 	/* Opera */
+}
+
+.content {
+    position: relative;
+    padding: 1rem 3rem;
+    display: none;
+}
+
+.group {
+    display: block;
+}
+
+.group label {
+    width: 5rem;
+    text-align: right;
+    display: inline-block;
+}
+
+.group .imageItem {
+    vertical-align: top;
+}
+
+.first{
+    margin-top: 0  !important;
+    margin-left: 0  !important;
+}
+
+.footer {
+
+}
+
+.cover {
+    z-index: 2;
+    position: fixed;
+    background: #99999999;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right:0;
+    margin: 0;
+    padding: 0;
+	height:100%;
+    display: none;
+}
+
+.loading {
+    z-index: 2;
+    position: fixed;
+    background-color: #99999999;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right:0;
+    margin: 0;
+    padding: 0;
+    display: none;
+}
+
+/**
+  图片一直旋转
+ */
+@-webkit-keyframes rotation{
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(360deg);}
+}
+
+.loading img {
+    width: 3rem;
+    height: 3rem;
+    -webkit-transform: rotate(360deg);
+    animation: rotation 1s ease infinite;
+    -moz-animation: rotation 1s ease infinite;
+    -webkit-animation: rotation 1s ease infinite;
+    -o-animation: rotation 1s ease infinite;
+    line-height: 0;
+}
+
+.loading span {
+    display: inline-block;
+    position: relative;
+    top:-1.5rem;
+    transform: translateY(40%);
+	-ms-transform:translateY(40%); 	/* IE 9 */
+	-moz-transform:translateY(40%); 	/* Firefox */
+	-webkit-transform:translateY(40%); /* Safari 和 Chrome */
+	-o-transform:translateY(40%); 	/* Opera */
+    margin-left: 10px;
+    color: orangered;
+}
+
+.table {
+    position: relative;
+    margin: 0;
+}
+
+.table table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+}
+
+.table tr {
+    background-color: white;
+}
+
+.table tr.dark {
+    background-color: #F5F5F5;
+}
+
+.table th {
+    background-color: lightgoldenrodyellow;
+    color: black;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.table table th, .table table td {
+    border: 1px solid #aaa;
+    padding: 5px 10px;
+    text-align: center;
+    word-break:break-all;
+    min-width: 5rem;
+}
+
+.pageNavigation {
+    margin-top: 20px;
+    float: right;
+}
+
+.pageNavigation img,.pageNavigation span {
+    border: 1px solid #d5d5d5;
+    border-radius: 2px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.pageNavigation img:hover,.pageNavigation span:hover {
+    border: 1px solid #1296db;
+}
+
+.pageNavigation img {
+    width: 1rem;
+    height: 1rem;
+    padding: 5px 10px;
+}
+
+.pageNavigation span {
+    width: 1.5rem;
+    height: 1rem;
+    padding: 5px 5px;
+    vertical-align: top;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    color: #1296db;
+    border-radius: 0 3px 3px 0 !important;
+    margin-right: 5px;
+}
+
+.pageNavigation .textInput {
+    width: 1.5rem;
+    height: 1rem;
+    vertical-align: top;
+    font-size: 12px;
+    display: inline-block;
+    padding: 5px 5px;
+    text-align: center;
+    border-radius: 3px 0 0 3px;
+    margin-left: 5px;
+}
+
