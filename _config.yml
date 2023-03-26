@@ -13,28 +13,28 @@ baseurl: ""
 lang: en
 
 # Change to your timezone › http://www.timezoneconverter.com/cgi-bin/findzone/findzone
-timezone: Asia/Shanghai
+timezone:
 
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
 title: Ejin66 # the main title
 
-tagline: Programing well, go home early # it will display as the sub-title
+tagline: 123456 # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  Ejin66 blog.
+  Ejin66 blog
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: "https://ejin66.github.io"
 
 github:
-  username: ejin66 # change to your github username
+  username: github_username # change to your github username
 
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: 金天
+  name: jintian
   email: example@domain.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
@@ -73,7 +73,7 @@ theme_mode: # [light|dark]
 # will be added to all image (site avatar & posts' images) paths starting with '/'
 #
 # e.g. 'https://cdn.com'
-# img_cdn: "https://chirpy-img.netlify.app"
+img_cdn:
 
 # the avatar on sidebar, support local or CORS resources
 avatar:
