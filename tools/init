@@ -113,9 +113,13 @@ commit() {
 }
 
 main() {
+echo 1
   check_env
+echo 2
   checkout_latest_tag
+echo 3
   init_files
+echo 4
   commit
 }
 
