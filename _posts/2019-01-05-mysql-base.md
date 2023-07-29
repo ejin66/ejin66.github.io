@@ -31,7 +31,7 @@ tags: [Mysql]
 1. 创建用户
 
    ```bash
-   create user $username@$ip identified by $password;
+   create user $username@$ip identified by '$password';
    ```
 
    `用户名@ip`的作用是限定用户在哪些ip下可以访问数据库，如：
@@ -55,7 +55,7 @@ tags: [Mysql]
 4. 修改密码
 
    ```bash
-   set password for $username@$ip = Password($new_password)
+   set password for $username@$ip = Password('$new_password')
    ```
 
 5. 查看用户权限
@@ -77,6 +77,8 @@ tags: [Mysql]
    - create
    - drop
    - update
+   - create
+   - all privileges
    - ...
 
    同时授权多个，用逗号分隔，如：`select,insert`。
